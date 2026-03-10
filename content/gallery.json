@@ -1,0 +1,42 @@
+[
+  {
+    "src": "/images/gallery/harbor-tour-skyline.jpg",
+    "alt": "New York City skyline viewed from the deck of a SouthStar Charters harbor tour boat",
+    "category": "Harbor Tours"
+  },
+  {
+    "src": "/images/gallery/statue-of-liberty.jpg",
+    "alt": "The Statue of Liberty seen from a private SouthStar Charters yacht",
+    "category": "Harbor Tours"
+  },
+  {
+    "src": "/images/gallery/striped-bass-catch.jpg",
+    "alt": "A happy angler holding a large striped bass caught on a SouthStar fishing charter",
+    "category": "Fishing"
+  },
+  {
+    "src": "/images/gallery/tuna-catch.jpg",
+    "alt": "A yellowfin tuna caught during an offshore fishing charter with SouthStar Charters",
+    "category": "Fishing"
+  },
+  {
+    "src": "/images/gallery/boat-on-water.jpg",
+    "alt": "The SouthStar Charters Boston Whaler cruising through New York Harbor",
+    "category": "The Boat"
+  },
+  {
+    "src": "/images/gallery/group-fishing.jpg",
+    "alt": "A group of friends enjoying a private fishing charter with SouthStar Charters",
+    "category": "Fishing"
+  },
+  {
+    "src": "/images/gallery/spearfishing-dive.jpg",
+    "alt": "A diver preparing for a spearfishing trip aboard the SouthStar Charters vessel",
+    "category": "Diving"
+  },
+  {
+    "src": "/images/gallery/sunset-harbor.jpg",
+    "alt": "A stunning sunset over New York Harbor during a SouthStar Charters evening tour",
+    "category": "Harbor Tours"
+  }
+]

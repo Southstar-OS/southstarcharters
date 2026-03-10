@@ -1,0 +1,65 @@
+{
+  "lastUpdated": "2024-01-01",
+  "note": "Prices are subject to change. Additional fuel surcharges may apply.",
+  "categories": [
+    {
+      "id": "offshore",
+      "title": "Offshore Canyons",
+      "description": "Specializing in Topwater Popping, Light Tackle Jigging, Fly-Fishing, Trolling, Live Lining, and Chunking.",
+      "species": ["Yellowfin Tuna", "Big-Eye Tuna", "Longfin Tuna", "Bluefin Tuna", "Mahi", "Wahoo", "Marlin", "Swordfish"],
+      "trips": [
+        { "name": "Day Troll (12 Hours)", "price": 3000 },
+        { "name": "Overnight (26 Hours)", "price": 5000 }
+      ],
+      "maxAnglers": 4,
+      "extraAnglerFee": 250
+    },
+    {
+      "id": "midshore",
+      "title": "Midshore Charters",
+      "description": "Specializing in Topwater Popping, Light Tackle Jigging, Fly-Fishing, Trolling, Live Lining, and Chunking.",
+      "species": ["Bluefin Tuna", "Yellowfin Tuna", "Mahi"],
+      "trips": [
+        { "name": "10–12 Hours (up to 65 nm)", "price": 2600 }
+      ],
+      "maxAnglers": 4,
+      "extraAnglerFee": 250
+    },
+    {
+      "id": "inshore",
+      "title": "Inshore Charters",
+      "description": "Specializing in Topwater Popping, Light Tackle Jigging, Fly-Fishing, Trolling, Live Lining, and Chunking.",
+      "species": ["Striped Bass", "Bluefish", "Bluefin Tuna", "False Albacore", "Bonito"],
+      "trips": [
+        { "name": "4 Hours", "price": 750 },
+        { "name": "5 Hours", "price": 850 },
+        { "name": "6 Hours", "price": 900 },
+        { "name": "Bluefin (Spring/Fall)", "price": 1400 }
+      ],
+      "maxAnglers": 4,
+      "extraAnglerFee": 250
+    },
+    {
+      "id": "beach",
+      "title": "Beach Trips",
+      "description": "Land-based guided Fly & Light Tackle trips via 4x4. Surf, Jetty, Flats, Back Bay, and Coastal Rivers.",
+      "species": ["Striped Bass", "Bluefish", "Weakfish", "False Albacore", "Fluke", "Bonito"],
+      "trips": [
+        { "name": "4 Hours (per person)", "price": 260 }
+      ],
+      "maxAnglers": null,
+      "extraAnglerFee": null
+    },
+    {
+      "id": "spearfishing",
+      "title": "Spearfishing / Dive Charters",
+      "description": "Free-dive spearfishing in the back bays and coastal waters of the NJ Shore.",
+      "species": [],
+      "trips": [
+        { "name": "3-Hour Trip (per person)", "price": 100 }
+      ],
+      "maxAnglers": 6,
+      "extraAnglerFee": null
+    }
+  ]
+}

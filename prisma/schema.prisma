@@ -1,0 +1,27 @@
+// SouthStar Charters — Prisma Schema
+// Stack: Next.js + Neon Postgres + Prisma 7
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+/// Contact form submissions / lead capture.
+/// This is the only V1 table — keep the DB lean.
+model Lead {
+  id          String   @id @default(cuid())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  name        String
+  email       String
+  phone       String?
+  inquiryType String?  @map("inquiry_type")
+  message     String
+  source      String?  @default("Contact Form")
+
+  @@map("leads")
+}

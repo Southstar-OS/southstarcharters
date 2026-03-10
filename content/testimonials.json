@@ -1,0 +1,23 @@
+[
+  {
+    "id": "1",
+    "author": "Ray Hermstedt",
+    "quote": "Amazing time. People are great and boat is awesome. Definitely 100% worth it.",
+    "rating": 5,
+    "featured": true
+  },
+  {
+    "id": "2",
+    "author": "Pat Caragliano",
+    "quote": "The Best Day of Fishing in 40 years. Captain Eric professional and courteous. Was on the Bite as soon as we left marina. I was hoping just to have the boys home from school and some family time but got much more! Over 30 fish 28\" plus. Will recommend Captain Eric to all of my friends and business associates. Thank You!",
+    "rating": 5,
+    "featured": true
+  },
+  {
+    "id": "3",
+    "author": "Joe Simko",
+    "quote": "Wow what a great captain and crew! It is always a good experience with SouthStar Charters! I can't say I ever had a bad fishing day with these guys! Their customer service is impeccable and satisfying. They always make me feel like family when I come on the boat. What a great time aboard the Southstar! Can't wait to get on a trip for the famous fall striper run!",
+    "rating": 5,
+    "featured": true
+  }
+]

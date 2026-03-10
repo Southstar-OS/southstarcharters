@@ -1,0 +1,63 @@
+{
+  "harborTours": {
+    "title": "NYC Harbor Sightseeing Tours",
+    "shortDescription": "Experience New York from the deck of a private luxury yacht. See the Statue of Liberty, the Manhattan skyline, and the Brooklyn Bridge on a comfortable, VIP-style boat tour.",
+    "heroImage": "/images/harbor-tours-hero.jpg",
+    "highlights": [
+      "Private yacht experience for up to 13 guests",
+      "Fully narrated by experienced, entertaining captains",
+      "Climate-controlled cabin with full kitchen and dining",
+      "Free Wi-Fi, A/C outlets, and charging ports",
+      "Outdoor deck seating for unobstructed views",
+      "One-hour tours departing from Staten Island, NY"
+    ],
+    "amenities": [
+      "2017 Twin Mercury Verado Motors (700 HP)",
+      "Full Kitchen & Dining Room",
+      "Separate Sleeping Areas (Sleeps 7–11)",
+      "VHF Radio & Stereo",
+      "FLIR Infrared",
+      "Multiple Sonar & Radar Technology",
+      "Wi-Fi",
+      "A/C Outlets & Charging Ports",
+      "Multiple Seating Areas",
+      "Generator",
+      "Night Lighting & Below-Boat Lighting",
+      "Bathroom & Shower Areas",
+      "Two Refrigerators",
+      "Outside Grill"
+    ]
+  },
+  "fishingCharters": {
+    "title": "Inshore & Offshore Fishing Charters",
+    "shortDescription": "Navigate the creeks, canals, inlets, and coastal waters of the New Jersey coast. From half-day inshore trips to overnight offshore canyon runs, we put you on the fish.",
+    "heroImage": "/images/fishing-charters-hero.jpg",
+    "highlights": [
+      "Inshore, midshore, and offshore options available",
+      "Climate-controlled pilothouse for year-round comfort",
+      "Expert local captains who know the waters",
+      "All tackle and gear provided",
+      "Half-day and full-day trips available",
+      "Departing from Belmar and Barnegat Light, NJ"
+    ],
+    "fishingLocations": [
+      "Manasquan & Belmar Shark River",
+      "Sea Girt Reef",
+      "Barnegat Bay",
+      "Inner Coastal (Manasquan Channel to Barnegat Bay)",
+      "Sandy Hook",
+      "New Jersey Shore Wreck Sites"
+    ],
+    "boat": {
+      "name": "2017 Defiance Admiral 220",
+      "length": "27.6 feet",
+      "capacity": 6,
+      "features": [
+        "Sealed Pilothouse Design",
+        "Heated for Late Winter Fishing",
+        "Live Wells & Coolers",
+        "Fish Boxes"
+      ]
+    }
+  }
+}
