@@ -1,0 +1,37 @@
+name: Security Headers Check
+
+on:
+  workflow_run:
+    workflows: ["Deploy to Vercel"]
+    types: [completed]
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  check-headers:
+    name: Verify Security Headers
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch' }}
+    steps:
+      - name: Check security headers
+        run: |
+          echo "Checking security headers for southstarchartersnj.com..."
+          RESPONSE=$(curl -sI https://southstarchartersnj.com)
+          echo "$RESPONSE"
+          echo ""
+          echo "--- Header Analysis ---"
+
+          check_header() {
+            HEADER_NAME=$1
+            if echo "$RESPONSE" | grep -qi "$HEADER_NAME"; then
+              echo "PASS: $HEADER_NAME is present"
+            else
+              echo "WARN: $HEADER_NAME is missing"
+            fi
+          }
+
+          check_header "X-Frame-Options"
+          check_header "X-Content-Type-Options"
+          check_header "Strict-Transport-Security"
+          check_header "Content-Security-Policy"
+          check_header "Referrer-Policy"
