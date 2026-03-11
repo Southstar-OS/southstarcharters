@@ -16,7 +16,7 @@ jobs:
       - name: Check security headers
         run: |
           echo "Checking security headers for southstarchartersnj.com..."
-          RESPONSE=$(curl -sI https://southstarchartersnj.com)
+          RESPONSE=$(curl -ksI https://southstarchartersnj.com)
           echo "$RESPONSE"
           echo ""
           echo "--- Header Analysis ---"
