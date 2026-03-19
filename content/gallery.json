@@ -1,42 +1,102 @@
 [
   {
-    "src": "/images/gallery/harbor-tour-skyline.jpg",
-    "alt": "New York City skyline viewed from the deck of a SouthStar Charters harbor tour boat",
+    "src": "/images/gallery/southstar_gallery_1.webp",
+    "alt": "Breathtaking views of the Manhattan skyline from the water with SouthStar Charters",
     "category": "Harbor Tours"
   },
   {
-    "src": "/images/gallery/statue-of-liberty.jpg",
-    "alt": "The Statue of Liberty seen from a private SouthStar Charters yacht",
+    "src": "/images/gallery/southstar_gallery_2.webp",
+    "alt": "A successful morning of inshore fishing in the harbor catching striped bass",
+    "category": "Fishing"
+  },
+  {
+    "src": "/images/gallery/southstar_gallery_3.webp",
+    "alt": "Golden hour views of the Statue of Liberty during a SouthStar sunset cruise",
     "category": "Harbor Tours"
   },
   {
-    "src": "/images/gallery/striped-bass-catch.jpg",
-    "alt": "A happy angler holding a large striped bass caught on a SouthStar fishing charter",
-    "category": "Fishing"
-  },
-  {
-    "src": "/images/gallery/tuna-catch.jpg",
-    "alt": "A yellowfin tuna caught during an offshore fishing charter with SouthStar Charters",
-    "category": "Fishing"
-  },
-  {
-    "src": "/images/gallery/boat-on-water.jpg",
-    "alt": "The SouthStar Charters Boston Whaler cruising through New York Harbor",
+    "src": "/images/gallery/southstar_gallery_4.webp",
+    "alt": "Our well-maintained SouthStar Charters boat ready for departure",
     "category": "The Boat"
   },
   {
-    "src": "/images/gallery/group-fishing.jpg",
-    "alt": "A group of friends enjoying a private fishing charter with SouthStar Charters",
+    "src": "/images/gallery/southstar_gallery_5.webp",
+    "alt": "Making memories with the whole family on a SouthStar fishing trip",
     "category": "Fishing"
   },
   {
-    "src": "/images/gallery/spearfishing-dive.jpg",
-    "alt": "A diver preparing for a spearfishing trip aboard the SouthStar Charters vessel",
-    "category": "Diving"
+    "src": "/images/gallery/southstar_gallery_6.webp",
+    "alt": "Cruising under the iconic Brooklyn Bridge with SouthStar Charters",
+    "category": "Harbor Tours"
   },
   {
-    "src": "/images/gallery/sunset-harbor.jpg",
-    "alt": "A stunning sunset over New York Harbor during a SouthStar Charters evening tour",
+    "src": "/images/gallery/southstar_gallery_7.webp",
+    "alt": "Another impressive trophy catch on a SouthStar charter",
+    "category": "Fishing"
+  },
+  {
+    "src": "/images/gallery/southstar_gallery_8.webp",
+    "alt": "Up close with NYC's famous landmarks during a harbor sightseeing tour",
+    "category": "Harbor Tours"
+  },
+  {
+    "src": "/images/gallery/southstar_gallery_9.webp",
+    "alt": "Heading out for a day of adventure from Staten Island",
+    "category": "The Boat"
+  },
+  {
+    "src": "/images/gallery/southstar_gallery_10.webp",
+    "alt": "The excitement of the catch on a SouthStar fishing charter",
+    "category": "Fishing"
+  },
+  {
+    "src": "/images/gallery/southstar_gallery_11.webp",
+    "alt": "Unmatched views of Liberty Island from a SouthStar tour boat",
+    "category": "Harbor Tours"
+  },
+  {
+    "src": "/images/gallery/southstar_gallery_12.webp",
+    "alt": "Clean and spacious deck of the SouthStar vessel for your comfort",
+    "category": "The Boat"
+  },
+  {
+    "src": "/images/gallery/southstar_gallery_13.webp",
+    "alt": "Peak striped bass fishing season in the NYC harbor",
+    "category": "Fishing"
+  },
+  {
+    "src": "/images/gallery/southstar_gallery_14.webp",
+    "alt": "Panoramic views of the city skyline during a SouthStar harbor tour",
+    "category": "Harbor Tours"
+  },
+  {
+    "src": "/images/gallery/southstar_gallery_15.webp",
+    "alt": "Happy clients enjoying a day on the water with SouthStar Charters",
+    "category": "Fishing"
+  },
+  {
+    "src": "/images/gallery/southstar_gallery_16.webp",
+    "alt": "Smooth sailing in the harbor with SouthStar Charters",
+    "category": "The Boat"
+  },
+  {
+    "src": "/images/gallery/southstar_gallery_17.webp",
+    "alt": "The perfect end to a perfect day of fishing at sunset",
+    "category": "Fishing"
+  },
+  {
+    "src": "/images/gallery/southstar_gallery_18.webp",
+    "alt": "NYC harbor comes alive at night with city light views",
+    "category": "Harbor Tours"
+  },
+  {
+    "src": "/images/gallery/southstar_gallery_19.webp",
+    "alt": "Experienced SouthStar captains you can trust at the helm",
+    "category": "The Boat"
+  },
+  {
+    "src": "/images/gallery/southstar_gallery_20.webp",
+    "alt": "Discovering the natural beauty and wildlife of the harbor",
     "category": "Harbor Tours"
   }
 ]
