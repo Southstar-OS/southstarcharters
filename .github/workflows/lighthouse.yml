@@ -29,6 +29,10 @@ jobs:
           budgetPath: .github/lighthouse-budget.json
           uploadArtifacts: true
           temporaryPublicStorage: true
+          # Bypass SSL interstitial so Lighthouse can reach the site during CI.
+          # This mirrors the `curl -k` flag already used in security-headers.yml.
+          # Track SSL certificate status separately via the security-headers workflow.
+          chromeFlags: "--ignore-certificate-errors"
 
       - name: Upload Lighthouse results
         uses: actions/upload-artifact@v7
