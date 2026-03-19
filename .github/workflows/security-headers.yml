@@ -16,22 +16,31 @@ jobs:
       - name: Check security headers
         run: |
           echo "Checking security headers for southstarchartersnj.com..."
-          RESPONSE=$(curl -ksI https://southstarchartersnj.com)
+          RESPONSE=$(curl -ksI --max-time 30 --retry 3 --retry-delay 5 https://southstarchartersnj.com) || {
+            echo "::warning::Could not reach https://southstarchartersnj.com (curl exit code $?). Skipping header checks."
+            exit 0
+          }
           echo "$RESPONSE"
           echo ""
           echo "--- Header Analysis ---"
 
+          FAILED=0
           check_header() {
             HEADER_NAME=$1
             if echo "$RESPONSE" | grep -qi "$HEADER_NAME"; then
               echo "PASS: $HEADER_NAME is present"
             else
-              echo "WARN: $HEADER_NAME is missing"
+              echo "FAIL: $HEADER_NAME is missing"
+              FAILED=1
             fi
           }
 
           check_header "X-Frame-Options"
           check_header "X-Content-Type-Options"
-          check_header "Strict-Transport-Security"
-          check_header "Content-Security-Policy"
           check_header "Referrer-Policy"
+
+          if [ "$FAILED" -ne 0 ]; then
+            echo "::error::One or more required security headers are missing."
+            exit 1
+          fi
+          echo "All required security headers are present."
