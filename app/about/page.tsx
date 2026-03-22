@@ -14,7 +14,7 @@ export default function AboutPage() {
       <Hero
         title="About SouthStar Charters"
         subtitle="Where fishing meets luxury — on the water since day one."
-        backgroundImage="/images/about-hero.jpg"
+        backgroundImage="/images/gallery/southstar_gallery_9.webp"
       />
 
       {/* ── Our Story ────────────────────────────────────────────────── */}

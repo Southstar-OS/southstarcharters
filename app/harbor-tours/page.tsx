@@ -17,7 +17,7 @@ export default function HarborToursPage() {
       <Hero
         title="NYC Harbor Sightseeing Tours"
         subtitle="The Statue of Liberty, the Manhattan skyline, and the Brooklyn Bridge — all from the deck of your own private yacht."
-        backgroundImage="/images/harbor-tours-hero.jpg"
+        backgroundImage="/images/gallery/southstar_gallery_6.webp"
         cta={{ label: "Book Your Tour", href: "/contact" }}
       />
 
