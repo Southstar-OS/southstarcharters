@@ -13,7 +13,7 @@ export default function HomePage() {
       <Hero
         title="Your Private Adventure on the Water"
         subtitle="NYC Harbor Tours and New Jersey Fishing Charters from Staten Island, NY"
-        backgroundImage="/images/hero-home.jpg"
+        backgroundImage="/images/gallery/southstar_gallery_3.webp"
         cta={{ label: "Explore Harbor Tours", href: "/harbor-tours" }}
         secondaryCta={{ label: "View Fishing Charters", href: "/fishing-charters" }}
       />
@@ -25,7 +25,7 @@ export default function HomePage() {
           <div className="group relative overflow-hidden rounded-xl bg-slate-100">
             <div className="relative aspect-[4/3] w-full bg-slate-200">
               <Image
-                src="/images/service-harbor-tours.jpg"
+                src="/images/gallery/southstar_gallery_8.webp"
                 alt="NYC Harbor sightseeing tour aboard a private yacht"
                 fill
                 sizes="(max-width: 1024px) 100vw, 50vw"
@@ -54,7 +54,7 @@ export default function HomePage() {
           <div className="group relative overflow-hidden rounded-xl bg-slate-100">
             <div className="relative aspect-[4/3] w-full bg-slate-200">
               <Image
-                src="/images/service-fishing-charters.jpg"
+                src="/images/gallery/southstar_gallery_10.webp"
                 alt="Inshore fishing charter on the New Jersey coast"
                 fill
                 sizes="(max-width: 1024px) 100vw, 50vw"

@@ -6,7 +6,7 @@ export const siteConfig = {
   description:
     "Explore the best tourist spots of New York Harbor and fish the Jersey Shore with SouthStar Charters. Private harbor tours, inshore and offshore fishing charters, and spearfishing from Staten Island, NY.",
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://southstarchartersnj.com",
-  ogImage: "/images/og-default.jpg",
+  ogImage: "/images/gallery/southstar_gallery_1.webp",
 
   contact: {
     phone: "(833) 464-8687",

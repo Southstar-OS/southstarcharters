@@ -18,7 +18,7 @@ export default function FishingChartersPage() {
       <Hero
         title="Inshore & Offshore Fishing Charters"
         subtitle="Navigate the creeks, canals, inlets, and coastal waters of the New Jersey coast with expert local captains."
-        backgroundImage="/images/fishing-charters-hero.jpg"
+        backgroundImage="/images/gallery/southstar_gallery_7.webp"
         cta={{ label: "View Rates", href: "/rates" }}
         secondaryCta={{ label: "Contact Us", href: "/contact" }}
       />

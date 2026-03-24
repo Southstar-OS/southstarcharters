@@ -14,7 +14,7 @@ interface HeroProps {
 export default function Hero({
   title,
   subtitle,
-  backgroundImage = "/images/hero-default.jpg",
+  backgroundImage = "/images/gallery/southstar_gallery_9.webp",
   cta,
   secondaryCta,
   overlay = true,
