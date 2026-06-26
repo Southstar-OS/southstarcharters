@@ -6,6 +6,7 @@ export const metadata: Metadata = {
   title: "About Us | SouthStar Charters",
   description:
     "Meet the captain and crew behind SouthStar Charters. Learn about our boats, our mission, and why we are Staten Island's premier charter service.",
+  alternates: { canonical: "/about" },
 };
 
 export default function AboutPage() {

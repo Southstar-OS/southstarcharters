@@ -7,6 +7,7 @@ export const metadata: Metadata = {
   title: "NYC Harbor Sightseeing Tours | SouthStar Charters",
   description:
     "Experience the Statue of Liberty and the New York skyline on a private luxury yacht. VIP-style harbor tours for up to 13 guests from Staten Island, NY.",
+  alternates: { canonical: "/harbor-tours" },
 };
 
 const { harborTours } = services;

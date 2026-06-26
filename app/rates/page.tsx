@@ -7,6 +7,7 @@ export const metadata: Metadata = {
   title: "Charter Rates & Pricing | SouthStar Charters",
   description:
     "View our full list of charter rates for offshore, midshore, and inshore fishing, beach trips, and spearfishing. Transparent pricing from SouthStar Charters.",
+  alternates: { canonical: "/rates" },
 };
 
 export default function RatesPage() {

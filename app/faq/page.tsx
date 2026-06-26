@@ -6,6 +6,7 @@ export const metadata: Metadata = {
   title: "Frequently Asked Questions | SouthStar Charters",
   description:
     "Find answers to common questions about SouthStar Charters, including what to bring, weather policies, fishing licenses, and booking information.",
+  alternates: { canonical: "/faq" },
 };
 
 export default function FAQPage() {
