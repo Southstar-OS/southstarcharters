@@ -29,6 +29,7 @@ export const siteConfig = {
     { label: "Home", href: "/" },
     { label: "Harbor Tours", href: "/harbor-tours" },
     { label: "Fishing Charters", href: "/fishing-charters" },
+    { label: "Species & Seasons", href: "/species" },
     { label: "Rates", href: "/rates" },
     { label: "About", href: "/about" },
     { label: "Gallery", href: "/gallery" },
