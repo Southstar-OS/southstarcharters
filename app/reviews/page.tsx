@@ -6,6 +6,7 @@ export const metadata: Metadata = {
   title: "Customer Reviews | SouthStar Charters",
   description:
     "Read what our guests have to say about their experience with SouthStar Charters. Real reviews from real customers.",
+  alternates: { canonical: "/reviews" },
 };
 
 function StarRating({ rating }: { rating: number }) {

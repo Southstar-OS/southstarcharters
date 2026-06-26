@@ -6,6 +6,7 @@ export const metadata: Metadata = {
   title: "Contact Us | SouthStar Charters",
   description:
     "Get in touch with SouthStar Charters to book your private harbor tour, fishing charter, or dive trip. Call (833) 464-8687 or send us a message.",
+  alternates: { canonical: "/contact" },
 };
 
 export default function ContactPage() {

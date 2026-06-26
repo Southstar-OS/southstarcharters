@@ -8,6 +8,7 @@ export const metadata: Metadata = {
   title: "Fishing Charters — Inshore & Offshore | SouthStar Charters",
   description:
     "Inshore, midshore, and offshore fishing charters along the New Jersey coast. Striped Bass, Tuna, Bluefish, and more. Year-round trips from Belmar and Barnegat Light, NJ.",
+  alternates: { canonical: "/fishing-charters" },
 };
 
 const { fishingCharters } = services;
