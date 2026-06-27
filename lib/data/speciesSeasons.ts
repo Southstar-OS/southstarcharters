@@ -70,6 +70,24 @@ export interface Season {
   notes?: string;
 }
 
+/**
+ * Rights-gated image metadata for a species.
+ * Imagery is OPTIONAL and decorative — the factual season/limit text is always
+ * the primary, crawlable content. An image is only rendered when
+ * `rightsVerified` is true, and only NOAA Fisheries / NOAA public-domain works
+ * are eligible (see the gallery's rights rules). Credit must be shown visibly.
+ */
+export interface SpeciesImage {
+  /** Local path under /public (e.g. "/images/species/striped-bass.jpg"). */
+  src: string;
+  /** Exact credit line as published by NOAA, e.g. "NOAA Fisheries". */
+  credit: string;
+  /** NOAA source page the image + credit came from. */
+  sourceUrl: string;
+  /** False until a maintainer confirms NOAA public-domain rights. Gates rendering. */
+  rightsVerified: boolean;
+}
+
 export interface Species {
   commonName: string;
   scientificName: string;
@@ -78,6 +96,13 @@ export interface Species {
   permitRequired: boolean;
   seasons: Season[];
   verify: true;
+  /** Optional NOAA public-domain image; rendered only when rightsVerified. */
+  image?: SpeciesImage;
+  /**
+   * Short "why the limit matters" note tying bag/size limits to stock health.
+   * VERIFY: owner confirms vs the NOAA species page before publish — not invented.
+   */
+  conservationNote?: string;
 }
 
 /** Human-readable label + short authority note for each jurisdiction. */
