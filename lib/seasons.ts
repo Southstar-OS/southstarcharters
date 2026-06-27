@@ -8,9 +8,16 @@
  * deterministically — the UI passes `new Date()` for the live view.
  */
 
-import type { Season } from "@/lib/data/speciesSeasons";
+import { PLACEHOLDER_DATE, type Season } from "@/lib/data/speciesSeasons";
 
-export type SeasonStatus = "in" | "out";
+export type SeasonStatus = "in" | "out" | "pending";
+
+/** True when the season window is an unfilled sentinel placeholder ("00-00"). */
+export function isPlaceholderSeason(season: Season): boolean {
+  return (
+    season.openDate === PLACEHOLDER_DATE || season.closeDate === PLACEHOLDER_DATE
+  );
+}
 
 /** Convert "MM-DD" to a comparable ordinal (month * 100 + day). */
 function toOrdinal(mmdd: string): number {
@@ -30,8 +37,13 @@ function ordinalInWindow(ordinal: number, open: number, close: number): boolean 
     : ordinal >= open || ordinal <= close;
 }
 
-/** Is the species' season open on `reference`? */
+/**
+ * Is the species' season open on `reference`?
+ * Returns "pending" for unfilled placeholder windows so the UI never makes an
+ * in/out-of-season claim about unverified data.
+ */
 export function getSeasonStatus(season: Season, reference: Date): SeasonStatus {
+  if (isPlaceholderSeason(season)) return "pending";
   const open = toOrdinal(season.openDate);
   const close = toOrdinal(season.closeDate);
   return ordinalInWindow(dateToOrdinal(reference), open, close) ? "in" : "out";
@@ -42,6 +54,8 @@ export function getSeasonStatus(season: Season, reference: Date): SeasonStatus {
  * A month is marked open if any day within it falls in the window.
  */
 export function monthsInWindow(season: Season): boolean[] {
+  // Placeholder windows have no real coverage — report no open months.
+  if (isPlaceholderSeason(season)) return new Array(12).fill(false);
   const open = toOrdinal(season.openDate);
   const close = toOrdinal(season.closeDate);
   const months: boolean[] = [];

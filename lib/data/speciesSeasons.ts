@@ -2,55 +2,69 @@
  * North Atlantic Fish Species & Seasons — OWNER-CONTROLLED DATA
  * ============================================================================
  *
- * ⚠️  EVERY season date, size limit, and bag limit in this file is a PLACEHOLDER.
- *     Nothing here is real regulatory data. The page renders an "Unverified"
- *     badge on every entry (driven by `verify: true`) so nothing false can ship.
+ * ⚠️  EVERY season window, size limit, and bag limit in this file is an
+ *     UNFILLED PLACEHOLDER. There is NO real regulatory data here.
  *
- *     The site owner MUST replace these with current, confirmed values and clear
- *     the `verify` flag, after checking the governing authority for EACH season:
- *       - federal     → NOAA Fisheries (NMFS), 3–200 nmi
- *       - interstate  → ASMFC (Atlantic States Marine Fisheries Commission)
- *       - state       → NJ Division of Fish & Wildlife (NJDEP), 0–3 nmi
+ *     Placeholder windows use the SENTINEL value "00-00" (an impossible date) so
+ *     they are self-evidently fake at the data layer — not just behind a UI
+ *     badge. The calendar special-cases the sentinel and renders "Season dates
+ *     pending verification" instead of any in/out-of-season claim. This fails
+ *     CLOSED at the source: nothing here can be mistaken for a verified value.
+ *
+ *     To publish, the owner replaces each "00-00" window with a real "MM-DD"
+ *     range, fills minSizeInches / bagLimit, and clears `verify`, after checking
+ *     the governing authority for EACH season (see sourcing map below).
+ *
+ * Sourcing map (which authority each jurisdiction resolves against)
+ * ----------------------------------------------------------------------------
+ *   "federal"     → NOAA Fisheries (NMFS). HMS species (tunas, billfish,
+ *                   swordfish, sharks) also require a NOAA HMS Angling/Charter
+ *                   permit and are federally managed — flagged `permitRequired`.
+ *   "interstate"  → ASMFC fishery management plans, as implemented by NJ
+ *                   (striped bass, summer flounder, bluefish, weakfish, …).
+ *   "state"       → NJ DEP Division of Fish & Wildlife marine digest (0–3 nmi).
  *
  * Schema
  * ----------------------------------------------------------------------------
- *   Jurisdiction  "federal" | "interstate" | "state"
- *                 The authority that governs a given season window. The SAME
- *                 species can be open in one jurisdiction and closed in another
- *                 (e.g. summer flounder in state vs federal waters) — this is why
+ *   Jurisdiction  "federal" | "interstate" | "state" — the authority for a given
+ *                 window. The SAME species can be open in one jurisdiction and
+ *                 closed in another (e.g. summer flounder state vs federal), so
  *                 `seasons` is an array keyed by jurisdiction, never a flat field.
  *
  *   Season
  *     jurisdiction    Jurisdiction (above)
- *     openDate        "MM-DD" — first day of the open window
- *     closeDate       "MM-DD" — last day of the open window. If closeDate is
- *                     earlier than openDate, the window WRAPS the year end
- *                     (e.g. open 10-10, close 04-30 = mid-Oct through end of Apr).
- *     minSizeInches?  optional minimum legal size
- *     bagLimit?       optional per-angler daily bag limit
- *     notes?          free text (kept short; shown under the season)
+ *     openDate        "MM-DD", or the sentinel "00-00" while unverified
+ *     closeDate       "MM-DD", or the sentinel "00-00" while unverified.
+ *                     For real data, if closeDate < openDate the window WRAPS the
+ *                     year end (e.g. open 10-10, close 04-30).
+ *     minSizeInches?  optional minimum legal size (omit while unverified)
+ *     bagLimit?       optional per-angler daily bag limit (omit while unverified)
+ *     notes?          short free text shown under the season
  *
  *   Species
  *     commonName      e.g. "Striped Bass"
  *     scientificName  e.g. "Morone saxatilis"
- *     slug            URL-safe id, also used as React key
+ *     slug            URL-safe id, also the React key
  *     waterType       "inshore" | "offshore" | "both"
- *     permitRequired  true for Highly Migratory Species (HMS) that need a NOAA
- *                     HMS permit — tuna, sharks, billfish, swordfish
+ *     permitRequired  true for NOAA HMS species (tunas, billfish, swordfish,
+ *                     sharks) that need a federal HMS permit
  *     seasons         Season[] — one entry per governing jurisdiction
- *     verify          ALWAYS true here. Drives the "Unverified placeholder"
- *                     badge in the UI. Owner sets to false only after confirming.
+ *     verify          ALWAYS true here; drives the "Unverified placeholder"
+ *                     badge. Owner sets false only after confirming real data.
  *
- * Dates are intentionally rounded/synthetic placeholders, not real-looking
- * regulatory dates, to make it obvious they are demo values pending verification.
+ * Species list is grounded in content/rates.json (the charter's stated target
+ * species), not model knowledge.
  */
 
 export type Jurisdiction = "federal" | "interstate" | "state";
 
+/** Sentinel window value meaning "not yet filled / pending verification". */
+export const PLACEHOLDER_DATE = "00-00";
+
 export interface Season {
   jurisdiction: Jurisdiction;
-  openDate: string; // "MM-DD"
-  closeDate: string; // "MM-DD"
+  openDate: string; // "MM-DD" or PLACEHOLDER_DATE
+  closeDate: string; // "MM-DD" or PLACEHOLDER_DATE
   minSizeInches?: number;
   bagLimit?: number;
   notes?: string;
@@ -76,11 +90,24 @@ export const JURISDICTION_LABELS: Record<
   state: { label: "State", authority: "NJ Fish & Wildlife (0–3 nmi)" },
 };
 
+/** Every season starts as an unfilled, sentinel placeholder. // VERIFY before publish. */
+function pending(jurisdiction: Jurisdiction, notes: string): Season {
+  // VERIFY: owner replaces 00-00 with a real MM-DD window + size/bag from the
+  // governing authority (see sourcing map in the file header) before publish.
+  return {
+    jurisdiction,
+    openDate: PLACEHOLDER_DATE,
+    closeDate: PLACEHOLDER_DATE,
+    notes,
+  };
+}
+
 /**
- * PLACEHOLDER DATA — replace before publish. See header.
- * Each season carries a // VERIFY marker as a standing reminder.
+ * Target species, grounded in content/rates.json. ALL seasons are unfilled
+ * sentinel placeholders pending owner verification.
  */
 export const species: Species[] = [
+  // ── Inshore / nearshore (state + interstate jurisdictions matter here) ──
   {
     commonName: "Striped Bass",
     scientificName: "Morone saxatilis",
@@ -88,10 +115,8 @@ export const species: Species[] = [
     waterType: "inshore",
     permitRequired: false,
     seasons: [
-      // VERIFY: owner confirms vs ASMFC before publish
-      { jurisdiction: "interstate", openDate: "05-01", closeDate: "12-31", minSizeInches: 0, bagLimit: 0, notes: "PLACEHOLDER — not real regulatory data" },
-      // VERIFY: owner confirms vs NJ Fish & Wildlife before publish
-      { jurisdiction: "state", openDate: "03-01", closeDate: "12-31", minSizeInches: 0, bagLimit: 0, notes: "PLACEHOLDER — not real regulatory data" },
+      pending("interstate", "PLACEHOLDER — ASMFC striped bass plan, pending verification"),
+      pending("state", "PLACEHOLDER — NJ state waters, pending verification"),
     ],
     verify: true,
   },
@@ -102,34 +127,8 @@ export const species: Species[] = [
     waterType: "both",
     permitRequired: false,
     seasons: [
-      // VERIFY: owner confirms vs NOAA Fisheries before publish — state and federal windows DIFFER for this species
-      { jurisdiction: "federal", openDate: "06-01", closeDate: "09-30", minSizeInches: 0, bagLimit: 0, notes: "PLACEHOLDER — federal window differs from state" },
-      // VERIFY: owner confirms vs NJ Fish & Wildlife before publish
-      { jurisdiction: "state", openDate: "05-01", closeDate: "09-30", minSizeInches: 0, bagLimit: 0, notes: "PLACEHOLDER — state window differs from federal" },
-    ],
-    verify: true,
-  },
-  {
-    commonName: "Black Sea Bass",
-    scientificName: "Centropristis striata",
-    slug: "black-sea-bass",
-    waterType: "both",
-    permitRequired: false,
-    seasons: [
-      // VERIFY: owner confirms vs ASMFC before publish
-      { jurisdiction: "interstate", openDate: "05-15", closeDate: "12-31", minSizeInches: 0, bagLimit: 0, notes: "PLACEHOLDER — not real regulatory data" },
-    ],
-    verify: true,
-  },
-  {
-    commonName: "Scup (Porgy)",
-    scientificName: "Stenotomus chrysops",
-    slug: "scup-porgy",
-    waterType: "inshore",
-    permitRequired: false,
-    seasons: [
-      // VERIFY: owner confirms vs ASMFC before publish
-      { jurisdiction: "interstate", openDate: "01-01", closeDate: "12-31", minSizeInches: 0, bagLimit: 0, notes: "PLACEHOLDER — not real regulatory data" },
+      pending("federal", "PLACEHOLDER — federal window may differ from state, pending verification"),
+      pending("state", "PLACEHOLDER — NJ state window, pending verification"),
     ],
     verify: true,
   },
@@ -139,58 +138,111 @@ export const species: Species[] = [
     slug: "bluefish",
     waterType: "both",
     permitRequired: false,
-    seasons: [
-      // VERIFY: owner confirms vs ASMFC before publish
-      { jurisdiction: "interstate", openDate: "01-01", closeDate: "12-31", minSizeInches: 0, bagLimit: 0, notes: "PLACEHOLDER — not real regulatory data" },
-    ],
+    seasons: [pending("interstate", "PLACEHOLDER — ASMFC bluefish plan, pending verification")],
     verify: true,
   },
   {
-    commonName: "Tautog (Blackfish)",
-    scientificName: "Tautoga onitis",
-    slug: "tautog-blackfish",
+    commonName: "Weakfish",
+    scientificName: "Cynoscion regalis",
+    slug: "weakfish",
     waterType: "inshore",
     permitRequired: false,
     seasons: [
-      // VERIFY: owner confirms vs NJ Fish & Wildlife before publish — this window WRAPS the year end
-      { jurisdiction: "state", openDate: "10-10", closeDate: "04-30", minSizeInches: 0, bagLimit: 0, notes: "PLACEHOLDER — wraps year end (autumn through spring)" },
+      pending("interstate", "PLACEHOLDER — ASMFC weakfish plan, pending verification"),
+      pending("state", "PLACEHOLDER — NJ state waters, pending verification"),
     ],
     verify: true,
   },
   {
-    commonName: "Atlantic Cod",
-    scientificName: "Gadus morhua",
-    slug: "atlantic-cod",
-    waterType: "offshore",
+    commonName: "False Albacore (Little Tunny)",
+    scientificName: "Euthynnus alletteratus",
+    slug: "false-albacore",
+    waterType: "inshore",
     permitRequired: false,
-    seasons: [
-      // VERIFY: owner confirms vs NOAA Fisheries before publish
-      { jurisdiction: "federal", openDate: "09-01", closeDate: "04-30", minSizeInches: 0, bagLimit: 0, notes: "PLACEHOLDER — wraps year end" },
-    ],
+    seasons: [pending("state", "PLACEHOLDER — confirm NJ status, pending verification")],
     verify: true,
   },
+  {
+    commonName: "Atlantic Bonito",
+    scientificName: "Sarda sarda",
+    slug: "atlantic-bonito",
+    waterType: "inshore",
+    permitRequired: false,
+    seasons: [pending("state", "PLACEHOLDER — confirm NJ status, pending verification")],
+    verify: true,
+  },
+
+  // ── Offshore canyons — HMS species are federally managed & permit-required ──
   {
     commonName: "Bluefin Tuna",
     scientificName: "Thunnus thynnus",
     slug: "bluefin-tuna",
     waterType: "offshore",
-    permitRequired: true, // NOAA HMS permit required
-    seasons: [
-      // VERIFY: owner confirms vs NOAA Fisheries (HMS) before publish
-      { jurisdiction: "federal", openDate: "06-01", closeDate: "11-30", minSizeInches: 0, bagLimit: 0, notes: "PLACEHOLDER — requires NOAA HMS permit" },
-    ],
+    permitRequired: true, // NOAA HMS
+    seasons: [pending("federal", "PLACEHOLDER — NOAA HMS, pending verification")],
     verify: true,
   },
   {
-    commonName: "Shortfin Mako Shark",
-    scientificName: "Isurus oxyrinchus",
-    slug: "shortfin-mako-shark",
+    commonName: "Yellowfin Tuna",
+    scientificName: "Thunnus albacares",
+    slug: "yellowfin-tuna",
     waterType: "offshore",
-    permitRequired: true, // NOAA HMS permit required
-    seasons: [
-      // VERIFY: owner confirms vs NOAA Fisheries (HMS) before publish — retention rules change frequently
-      { jurisdiction: "federal", openDate: "01-01", closeDate: "12-31", minSizeInches: 0, bagLimit: 0, notes: "PLACEHOLDER — requires NOAA HMS permit; confirm retention status" },
-    ],
+    permitRequired: true, // NOAA HMS
+    seasons: [pending("federal", "PLACEHOLDER — NOAA HMS, pending verification")],
+    verify: true,
+  },
+  {
+    commonName: "Big-Eye Tuna",
+    scientificName: "Thunnus obesus",
+    slug: "big-eye-tuna",
+    waterType: "offshore",
+    permitRequired: true, // NOAA HMS
+    seasons: [pending("federal", "PLACEHOLDER — NOAA HMS, pending verification")],
+    verify: true,
+  },
+  {
+    commonName: "Longfin Tuna (Albacore)",
+    scientificName: "Thunnus alalunga",
+    slug: "longfin-tuna-albacore",
+    waterType: "offshore",
+    permitRequired: true, // NOAA HMS
+    seasons: [pending("federal", "PLACEHOLDER — NOAA HMS, pending verification")],
+    verify: true,
+  },
+  {
+    commonName: "Mahi (Dolphinfish)",
+    scientificName: "Coryphaena hippurus",
+    slug: "mahi-dolphinfish",
+    waterType: "offshore",
+    permitRequired: false, // federally managed (Mid-Atlantic) but NOT an HMS permit species
+    seasons: [pending("federal", "PLACEHOLDER — Mid-Atlantic FMP, pending verification")],
+    verify: true,
+  },
+  {
+    commonName: "Wahoo",
+    scientificName: "Acanthocybium solandri",
+    slug: "wahoo",
+    waterType: "offshore",
+    permitRequired: false, // federally managed but NOT an HMS permit species
+    seasons: [pending("federal", "PLACEHOLDER — federal management, pending verification")],
+    verify: true,
+  },
+  {
+    commonName: "Marlin (Billfish)",
+    scientificName: "Istiophoridae spp.",
+    slug: "marlin-billfish",
+    waterType: "offshore",
+    permitRequired: true, // NOAA HMS billfish
+    seasons: [pending("federal", "PLACEHOLDER — NOAA HMS billfish, pending verification")],
+    verify: true,
+  },
+  {
+    commonName: "Swordfish",
+    scientificName: "Xiphias gladius",
+    slug: "swordfish",
+    waterType: "offshore",
+    permitRequired: true, // NOAA HMS
+    seasons: [pending("federal", "PLACEHOLDER — NOAA HMS, pending verification")],
     verify: true,
   },
 ];

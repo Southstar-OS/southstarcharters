@@ -72,6 +72,7 @@ export default function SeasonCalendar({
               const status = getSeasonStatus(season, referenceDate);
               const months = monthsInWindow(season);
               const jur = JURISDICTION_LABELS[season.jurisdiction];
+              const isPending = status === "pending";
               const inSeason = status === "in";
               return (
                 <div
@@ -90,71 +91,88 @@ export default function SeasonCalendar({
                     <span
                       className={cn(
                         "inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold ring-1",
-                        inSeason
-                          ? "bg-green-100 text-green-800 ring-green-200"
-                          : "bg-slate-100 text-slate-600 ring-slate-200"
+                        isPending
+                          ? "bg-amber-100 text-amber-800 ring-amber-200"
+                          : inSeason
+                            ? "bg-green-100 text-green-800 ring-green-200"
+                            : "bg-slate-100 text-slate-600 ring-slate-200"
                       )}
                     >
-                      {inSeason ? "In season now" : "Out of season"}
+                      {isPending
+                        ? "Dates pending verification"
+                        : inSeason
+                          ? "In season now"
+                          : "Out of season"}
                     </span>
                   </div>
 
-                  {/* Text summary (crawlable) */}
-                  <dl className="mt-2 grid grid-cols-2 gap-x-4 gap-y-1 text-sm sm:grid-cols-4">
-                    <div>
-                      <dt className="text-xs font-medium text-slate-500">
-                        Open window
-                      </dt>
-                      <dd className="text-slate-800">
-                        {fmtRange(season.openDate, season.closeDate)}
-                      </dd>
-                    </div>
-                    <div>
-                      <dt className="text-xs font-medium text-slate-500">
-                        Min. size
-                      </dt>
-                      <dd className="text-slate-800">
-                        {season.minSizeInches != null
-                          ? `${season.minSizeInches} in`
-                          : "—"}
-                      </dd>
-                    </div>
-                    <div>
-                      <dt className="text-xs font-medium text-slate-500">
-                        Bag limit
-                      </dt>
-                      <dd className="text-slate-800">
-                        {season.bagLimit != null ? `${season.bagLimit}` : "—"}
-                      </dd>
-                    </div>
-                    <div className="col-span-2 sm:col-span-1">
-                      <dt className="text-xs font-medium text-slate-500">
-                        Notes
-                      </dt>
-                      <dd className="text-slate-600">{season.notes ?? "—"}</dd>
-                    </div>
-                  </dl>
+                  {isPending ? (
+                    /* No verified data yet — make no in/out claim. */
+                    <p className="mt-2 text-sm text-slate-600">
+                      Season dates and limits are pending owner verification
+                      against {jur.authority}.
+                      {season.notes ? ` (${season.notes})` : ""}
+                    </p>
+                  ) : (
+                    <>
+                      {/* Text summary (crawlable) */}
+                      <dl className="mt-2 grid grid-cols-2 gap-x-4 gap-y-1 text-sm sm:grid-cols-4">
+                        <div>
+                          <dt className="text-xs font-medium text-slate-500">
+                            Open window
+                          </dt>
+                          <dd className="text-slate-800">
+                            {fmtRange(season.openDate, season.closeDate)}
+                          </dd>
+                        </div>
+                        <div>
+                          <dt className="text-xs font-medium text-slate-500">
+                            Min. size
+                          </dt>
+                          <dd className="text-slate-800">
+                            {season.minSizeInches != null
+                              ? `${season.minSizeInches} in`
+                              : "—"}
+                          </dd>
+                        </div>
+                        <div>
+                          <dt className="text-xs font-medium text-slate-500">
+                            Bag limit
+                          </dt>
+                          <dd className="text-slate-800">
+                            {season.bagLimit != null ? `${season.bagLimit}` : "—"}
+                          </dd>
+                        </div>
+                        <div className="col-span-2 sm:col-span-1">
+                          <dt className="text-xs font-medium text-slate-500">
+                            Notes
+                          </dt>
+                          <dd className="text-slate-600">{season.notes ?? "—"}</dd>
+                        </div>
+                      </dl>
 
-                  {/* Month-by-month visual strip */}
-                  <div
-                    className="mt-3 grid grid-cols-12 gap-0.5"
-                    aria-label={`${sp.commonName} ${jur.label} open months`}
-                  >
-                    {months.map((openThisMonth, m) => (
+                      {/* Month-by-month visual strip */}
                       <div
-                        key={m}
-                        className={cn(
-                          "flex h-7 items-center justify-center rounded text-[10px] font-medium",
-                          openThisMonth
-                            ? "bg-green-500/80 text-white"
-                            : "bg-slate-100 text-slate-400"
-                        )}
-                        title={openThisMonth ? "Open (placeholder)" : "Closed (placeholder)"}
+                        className="mt-3 grid grid-cols-12 gap-0.5"
+                        aria-label={`${sp.commonName} ${jur.label} open months`}
                       >
-                        {MONTH_ABBREVIATIONS[m]}
+                        {months.map((openThisMonth, m) => (
+                          <div
+                            key={m}
+                            className={cn(
+                              "flex h-7 items-center justify-center rounded text-[10px] font-medium",
+                              openThisMonth
+                                ? "bg-green-500/80 text-white"
+                                : "bg-slate-100 text-slate-400"
+                            )}
+                            title={openThisMonth ? "Open" : "Closed"}
+                          >
+                            {MONTH_ABBREVIATIONS[m]}
+                          </div>
+                        ))}
                       </div>
-                    ))}
-                  </div>
+                    </>
+                  )}
                 </div>
               );
             })}
