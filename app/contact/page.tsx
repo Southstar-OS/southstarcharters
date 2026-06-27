@@ -1,12 +1,17 @@
 import type { Metadata } from "next";
+import { pageOpenGraph } from "@/lib/seo";
 import ContactForm from "@/components/ContactForm";
 import { siteConfig } from "@/lib/site";
 
+const TITLE = "Contact Us | SouthStar Charters";
+const DESCRIPTION =
+  "Get in touch with SouthStar Charters to book your private harbor tour, fishing charter, or dive trip. Call (833) 464-8687 or send us a message.";
+
 export const metadata: Metadata = {
-  title: "Contact Us | SouthStar Charters",
-  description:
-    "Get in touch with SouthStar Charters to book your private harbor tour, fishing charter, or dive trip. Call (833) 464-8687 or send us a message.",
+  title: TITLE,
+  description: DESCRIPTION,
   alternates: { canonical: "/contact" },
+  openGraph: pageOpenGraph({ path: "/contact", title: TITLE, description: DESCRIPTION }),
 };
 
 export default function ContactPage() {

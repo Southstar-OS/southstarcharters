@@ -1,12 +1,17 @@
 import type { Metadata } from "next";
+import { pageOpenGraph } from "@/lib/seo";
 import Hero from "@/components/Hero";
 import CTASection from "@/components/CTASection";
 
+const TITLE = "About Us | SouthStar Charters";
+const DESCRIPTION =
+  "Meet the captain and crew behind SouthStar Charters. Learn about our boats, our mission, and why we are Staten Island's premier charter service.";
+
 export const metadata: Metadata = {
-  title: "About Us | SouthStar Charters",
-  description:
-    "Meet the captain and crew behind SouthStar Charters. Learn about our boats, our mission, and why we are Staten Island's premier charter service.",
+  title: TITLE,
+  description: DESCRIPTION,
   alternates: { canonical: "/about" },
+  openGraph: pageOpenGraph({ path: "/about", title: TITLE, description: DESCRIPTION }),
 };
 
 export default function AboutPage() {

@@ -1,21 +1,19 @@
 import type { Metadata } from "next";
+import { pageOpenGraph } from "@/lib/seo";
 import SeasonCalendar from "@/components/SeasonCalendar";
 import CaptainTrustPanel from "@/components/CaptainTrustPanel";
 import CTASection from "@/components/CTASection";
 import { species } from "@/lib/data/speciesSeasons";
 
+const TITLE = "North Atlantic Fish Species & Seasons | SouthStar Charters";
+const DESCRIPTION =
+  "Target species in North Atlantic federal, interstate, and state waters, with a month-by-month season calendar. Seasons differ by jurisdiction — always confirm current regulations before fishing.";
+
 export const metadata: Metadata = {
-  title: "North Atlantic Fish Species & Seasons | SouthStar Charters",
-  description:
-    "Target species in North Atlantic federal, interstate, and state waters, with a month-by-month season calendar. Seasons differ by jurisdiction — always confirm current regulations before fishing.",
+  title: TITLE,
+  description: DESCRIPTION,
   alternates: { canonical: "/species" },
-  openGraph: {
-    type: "website",
-    url: "/species",
-    title: "North Atlantic Fish Species & Seasons | SouthStar Charters",
-    description:
-      "Target species in North Atlantic waters with a dynamic, month-by-month season calendar across federal, interstate, and state jurisdictions.",
-  },
+  openGraph: pageOpenGraph({ path: "/species", title: TITLE, description: DESCRIPTION }),
 };
 
 // Re-render hourly so the "in season now" status stays current as dates pass,
