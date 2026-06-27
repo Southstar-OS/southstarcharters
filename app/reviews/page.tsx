@@ -1,12 +1,17 @@
 import type { Metadata } from "next";
+import { pageOpenGraph } from "@/lib/seo";
 import testimonials from "@/content/testimonials.json";
 import CTASection from "@/components/CTASection";
 
+const TITLE = "Customer Reviews | SouthStar Charters";
+const DESCRIPTION =
+  "Read what our guests have to say about their experience with SouthStar Charters. Real reviews from real customers.";
+
 export const metadata: Metadata = {
-  title: "Customer Reviews | SouthStar Charters",
-  description:
-    "Read what our guests have to say about their experience with SouthStar Charters. Real reviews from real customers.",
+  title: TITLE,
+  description: DESCRIPTION,
   alternates: { canonical: "/reviews" },
+  openGraph: pageOpenGraph({ path: "/reviews", title: TITLE, description: DESCRIPTION }),
 };
 
 function StarRating({ rating }: { rating: number }) {

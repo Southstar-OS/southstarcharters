@@ -1,13 +1,18 @@
 import type { Metadata } from "next";
+import { pageOpenGraph } from "@/lib/seo";
 import Link from "next/link";
 import ratesData from "@/content/rates.json";
 import CTASection from "@/components/CTASection";
 
+const TITLE = "Charter Rates & Pricing | SouthStar Charters";
+const DESCRIPTION =
+  "View our full list of charter rates for offshore, midshore, and inshore fishing, beach trips, and spearfishing. Transparent pricing from SouthStar Charters.";
+
 export const metadata: Metadata = {
-  title: "Charter Rates & Pricing | SouthStar Charters",
-  description:
-    "View our full list of charter rates for offshore, midshore, and inshore fishing, beach trips, and spearfishing. Transparent pricing from SouthStar Charters.",
+  title: TITLE,
+  description: DESCRIPTION,
   alternates: { canonical: "/rates" },
+  openGraph: pageOpenGraph({ path: "/rates", title: TITLE, description: DESCRIPTION }),
 };
 
 export default function RatesPage() {

@@ -1,13 +1,18 @@
 import type { Metadata } from "next";
+import { pageOpenGraph } from "@/lib/seo";
 import Hero from "@/components/Hero";
 import CTASection from "@/components/CTASection";
 import services from "@/content/services.json";
 
+const TITLE = "NYC Harbor Sightseeing Tours | SouthStar Charters";
+const DESCRIPTION =
+  "Experience the Statue of Liberty and the New York skyline on a private luxury yacht. VIP-style harbor tours for up to 13 guests from Staten Island, NY.";
+
 export const metadata: Metadata = {
-  title: "NYC Harbor Sightseeing Tours | SouthStar Charters",
-  description:
-    "Experience the Statue of Liberty and the New York skyline on a private luxury yacht. VIP-style harbor tours for up to 13 guests from Staten Island, NY.",
+  title: TITLE,
+  description: DESCRIPTION,
   alternates: { canonical: "/harbor-tours" },
+  openGraph: pageOpenGraph({ path: "/harbor-tours", title: TITLE, description: DESCRIPTION }),
 };
 
 const { harborTours } = services;

@@ -1,13 +1,18 @@
 import type { Metadata } from "next";
+import { pageOpenGraph } from "@/lib/seo";
 import faqItems from "@/content/faq.json";
 import CTASection from "@/components/CTASection";
 import JsonLd from "@/components/JsonLd";
 
+const TITLE = "Frequently Asked Questions | SouthStar Charters";
+const DESCRIPTION =
+  "Find answers to common questions about SouthStar Charters, including what to bring, weather policies, fishing licenses, and booking information.";
+
 export const metadata: Metadata = {
-  title: "Frequently Asked Questions | SouthStar Charters",
-  description:
-    "Find answers to common questions about SouthStar Charters, including what to bring, weather policies, fishing licenses, and booking information.",
+  title: TITLE,
+  description: DESCRIPTION,
   alternates: { canonical: "/faq" },
+  openGraph: pageOpenGraph({ path: "/faq", title: TITLE, description: DESCRIPTION }),
 };
 
 // FAQPage structured data, built from the same content rendered visibly below

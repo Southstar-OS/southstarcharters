@@ -1,14 +1,19 @@
 import type { Metadata } from "next";
+import { pageOpenGraph } from "@/lib/seo";
 import Link from "next/link";
 import Hero from "@/components/Hero";
 import CTASection from "@/components/CTASection";
 import services from "@/content/services.json";
 
+const TITLE = "Fishing Charters — Inshore & Offshore | SouthStar Charters";
+const DESCRIPTION =
+  "Inshore, midshore, and offshore fishing charters along the New Jersey coast. Striped Bass, Tuna, Bluefish, and more. Year-round trips from Belmar and Barnegat Light, NJ.";
+
 export const metadata: Metadata = {
-  title: "Fishing Charters — Inshore & Offshore | SouthStar Charters",
-  description:
-    "Inshore, midshore, and offshore fishing charters along the New Jersey coast. Striped Bass, Tuna, Bluefish, and more. Year-round trips from Belmar and Barnegat Light, NJ.",
+  title: TITLE,
+  description: DESCRIPTION,
   alternates: { canonical: "/fishing-charters" },
+  openGraph: pageOpenGraph({ path: "/fishing-charters", title: TITLE, description: DESCRIPTION }),
 };
 
 const { fishingCharters } = services;
