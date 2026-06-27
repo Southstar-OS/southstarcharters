@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 
@@ -23,11 +24,21 @@ export default function Hero({
   return (
     <section
       className={cn(
-        "relative flex min-h-[60vh] items-center justify-center bg-slate-900 bg-cover bg-center px-4 text-center text-white",
+        "relative flex min-h-[60vh] items-center justify-center overflow-hidden bg-slate-900 px-4 text-center text-white",
         className
       )}
-      style={{ backgroundImage: `url(${backgroundImage})` }}
     >
+      {/* Optimized background image. Decorative (the heading carries meaning),
+          so alt is empty; `priority` because the hero is the LCP element. */}
+      <Image
+        src={backgroundImage}
+        alt=""
+        fill
+        priority
+        sizes="100vw"
+        className="object-cover"
+      />
+
       {/* Dark overlay for text readability */}
       {overlay && (
         <div className="absolute inset-0 bg-black/50" aria-hidden="true" />
