@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import faqItems from "@/content/faq.json";
 import CTASection from "@/components/CTASection";
+import JsonLd from "@/components/JsonLd";
 
 export const metadata: Metadata = {
   title: "Frequently Asked Questions | SouthStar Charters",
@@ -9,9 +10,25 @@ export const metadata: Metadata = {
   alternates: { canonical: "/faq" },
 };
 
+// FAQPage structured data, built from the same content rendered visibly below
+// (Google requires the FAQ content to be present on the page).
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faqItems.map((item) => ({
+    "@type": "Question",
+    name: item.question,
+    acceptedAnswer: {
+      "@type": "Answer",
+      text: item.answer,
+    },
+  })),
+};
+
 export default function FAQPage() {
   return (
     <>
+      <JsonLd data={faqJsonLd} />
       {/* ── Header ───────────────────────────────────────────────────── */}
       <section className="bg-slate-900 px-4 py-16 text-center text-white sm:py-20">
         <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">
