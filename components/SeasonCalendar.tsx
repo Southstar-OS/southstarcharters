@@ -1,4 +1,5 @@
 import { cn } from "@/lib/utils";
+import SpeciesImage from "@/components/SpeciesImage";
 import {
   JURISDICTION_LABELS,
   type Species,
@@ -177,6 +178,41 @@ export default function SeasonCalendar({
               );
             })}
           </div>
+
+          {/* Conservation note — the "why the limit matters" payload (crawlable text) */}
+          {sp.conservationNote && (
+            <div className="mt-5 rounded-lg bg-sky-50 p-4 ring-1 ring-sky-100">
+              <p className="text-xs font-semibold uppercase tracking-wide text-sky-800">
+                Why the limit matters
+              </p>
+              <p className="mt-1 text-sm leading-relaxed text-slate-700">
+                &ldquo;{sp.conservationNote}&rdquo;{" "}
+                {sp.image ? (
+                  <a
+                    href={sp.image.sourceUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="rounded font-medium text-sky-700 underline underline-offset-2 hover:text-sky-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:ring-offset-1"
+                  >
+                    — NOAA Fisheries
+                  </a>
+                ) : (
+                  <span className="font-medium text-slate-500">
+                    — NOAA Fisheries
+                  </span>
+                )}
+              </p>
+            </div>
+          )}
+
+          {/* Decorative, rights-gated NOAA image — below the data, lazy-loaded */}
+          {sp.image && (
+            <SpeciesImage
+              image={sp.image}
+              commonName={sp.commonName}
+              scientificName={sp.scientificName}
+            />
+          )}
         </article>
       ))}
     </div>

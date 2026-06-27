@@ -137,6 +137,15 @@ export const species: Species[] = [
     commonName: "Striped Bass",
     scientificName: "Morone saxatilis",
     slug: "striped-bass",
+    image: {
+      src: "/images/species/striped-bass.png",
+      credit: "NOAA Fisheries",
+      sourceUrl: "https://www.fisheries.noaa.gov/species/atlantic-striped-bass",
+      rightsVerified: true,
+    },
+    // VERIFY: NOAA atlantic-striped-bass — confirm current stock status before publish
+    conservationNote:
+      "The stock is overfished, but the fishing rate established under a rebuilding plan promotes population growth.",
     waterType: "inshore",
     permitRequired: false,
     seasons: [
@@ -149,6 +158,15 @@ export const species: Species[] = [
     commonName: "Summer Flounder (Fluke)",
     scientificName: "Paralichthys dentatus",
     slug: "summer-flounder-fluke",
+    image: {
+      src: "/images/species/summer-flounder-fluke.jpg",
+      credit: "NOAA Fisheries",
+      sourceUrl: "https://www.fisheries.noaa.gov/species/summer-flounder",
+      rightsVerified: true,
+    },
+    // VERIFY: NOAA summer-flounder — confirm current stock status before publish
+    conservationNote:
+      "The stock is not overfished and is not subject to overfishing.",
     waterType: "both",
     permitRequired: false,
     seasons: [
@@ -161,6 +179,15 @@ export const species: Species[] = [
     commonName: "Bluefish",
     scientificName: "Pomatomus saltatrix",
     slug: "bluefish",
+    image: {
+      src: "/images/species/bluefish.png",
+      credit: "NOAA Fisheries/Jack Hornady",
+      sourceUrl: "https://www.fisheries.noaa.gov/species/bluefish",
+      rightsVerified: true,
+    },
+    // VERIFY: NOAA bluefish — confirm current stock status before publish
+    conservationNote:
+      "The stock is not overfished and is not subject to overfishing.",
     waterType: "both",
     permitRequired: false,
     seasons: [pending("interstate", "PLACEHOLDER — ASMFC bluefish plan, pending verification")],
@@ -202,6 +229,15 @@ export const species: Species[] = [
     commonName: "Bluefin Tuna",
     scientificName: "Thunnus thynnus",
     slug: "bluefin-tuna",
+    image: {
+      src: "/images/species/bluefin-tuna.png",
+      credit: "NOAA Fisheries/Jack Hornady",
+      sourceUrl: "https://www.fisheries.noaa.gov/species/western-atlantic-bluefin-tuna",
+      rightsVerified: true,
+    },
+    // VERIFY: NOAA western-atlantic-bluefin-tuna — confirm current stock status before publish
+    conservationNote:
+      "Western Atlantic bluefin tuna is not subject to overfishing; its overfished status is unknown. It is managed under a rebuilding plan.",
     waterType: "offshore",
     permitRequired: true, // NOAA HMS
     seasons: [pending("federal", "PLACEHOLDER — NOAA HMS, pending verification")],
@@ -211,6 +247,15 @@ export const species: Species[] = [
     commonName: "Yellowfin Tuna",
     scientificName: "Thunnus albacares",
     slug: "yellowfin-tuna",
+    image: {
+      src: "/images/species/yellowfin-tuna.png",
+      credit: "NOAA Fisheries/Jack Hornady",
+      sourceUrl: "https://www.fisheries.noaa.gov/species/atlantic-yellowfin-tuna",
+      rightsVerified: true,
+    },
+    // VERIFY: NOAA atlantic-yellowfin-tuna — confirm current stock status before publish
+    conservationNote:
+      "The stock is not overfished and is not subject to overfishing.",
     waterType: "offshore",
     permitRequired: true, // NOAA HMS
     seasons: [pending("federal", "PLACEHOLDER — NOAA HMS, pending verification")],
@@ -220,6 +265,15 @@ export const species: Species[] = [
     commonName: "Big-Eye Tuna",
     scientificName: "Thunnus obesus",
     slug: "big-eye-tuna",
+    image: {
+      src: "/images/species/big-eye-tuna.png",
+      credit: "NOAA Fisheries/Jack Hornady",
+      sourceUrl: "https://www.fisheries.noaa.gov/species/atlantic-bigeye-tuna",
+      rightsVerified: true,
+    },
+    // VERIFY: NOAA atlantic-bigeye-tuna — confirm current stock status before publish
+    conservationNote:
+      "The stock is overfished, but the fishing rate established under a conservation and management plan promotes population growth.",
     waterType: "offshore",
     permitRequired: true, // NOAA HMS
     seasons: [pending("federal", "PLACEHOLDER — NOAA HMS, pending verification")],
@@ -229,6 +283,15 @@ export const species: Species[] = [
     commonName: "Longfin Tuna (Albacore)",
     scientificName: "Thunnus alalunga",
     slug: "longfin-tuna-albacore",
+    image: {
+      src: "/images/species/longfin-tuna-albacore.png",
+      credit: "NOAA Fisheries/Jack Hornady",
+      sourceUrl: "https://www.fisheries.noaa.gov/species/north-atlantic-albacore-tuna",
+      rightsVerified: true,
+    },
+    // VERIFY: NOAA north-atlantic-albacore-tuna — confirm current stock status before publish
+    conservationNote:
+      "North Atlantic albacore is not overfished and not subject to overfishing.",
     waterType: "offshore",
     permitRequired: true, // NOAA HMS
     seasons: [pending("federal", "PLACEHOLDER — NOAA HMS, pending verification")],
@@ -238,6 +301,15 @@ export const species: Species[] = [
     commonName: "Mahi (Dolphinfish)",
     scientificName: "Coryphaena hippurus",
     slug: "mahi-dolphinfish",
+    image: {
+      src: "/images/species/mahi-dolphinfish.jpg",
+      credit: "NOAA Fisheries",
+      sourceUrl: "https://www.fisheries.noaa.gov/species/atlantic-mahi-mahi",
+      rightsVerified: true,
+    },
+    // VERIFY: NOAA atlantic-mahi-mahi — confirm current stock status before publish
+    conservationNote:
+      "The population level is unknown, but management measures are in place.",
     waterType: "offshore",
     permitRequired: false, // federally managed (Mid-Atlantic) but NOT an HMS permit species
     seasons: [pending("federal", "PLACEHOLDER — Mid-Atlantic FMP, pending verification")],
@@ -247,6 +319,15 @@ export const species: Species[] = [
     commonName: "Wahoo",
     scientificName: "Acanthocybium solandri",
     slug: "wahoo",
+    image: {
+      src: "/images/species/wahoo.jpg",
+      credit: "NOAA Fisheries",
+      sourceUrl: "https://www.fisheries.noaa.gov/species/atlantic-wahoo",
+      rightsVerified: true,
+    },
+    // VERIFY: NOAA atlantic-wahoo — confirm current stock status before publish
+    conservationNote:
+      "The stock has not been assessed; population levels are unknown, but management measures are in place.",
     waterType: "offshore",
     permitRequired: false, // federally managed but NOT an HMS permit species
     seasons: [pending("federal", "PLACEHOLDER — federal management, pending verification")],
@@ -265,6 +346,15 @@ export const species: Species[] = [
     commonName: "Swordfish",
     scientificName: "Xiphias gladius",
     slug: "swordfish",
+    image: {
+      src: "/images/species/swordfish.png",
+      credit: "NOAA Fisheries/Jack Hornady",
+      sourceUrl: "https://www.fisheries.noaa.gov/species/north-atlantic-swordfish",
+      rightsVerified: true,
+    },
+    // VERIFY: NOAA north-atlantic-swordfish — confirm current stock status before publish
+    conservationNote:
+      "The stock is not overfished and is not subject to overfishing.",
     waterType: "offshore",
     permitRequired: true, // NOAA HMS
     seasons: [pending("federal", "PLACEHOLDER — NOAA HMS, pending verification")],
