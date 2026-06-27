@@ -2,7 +2,7 @@ import Link from "next/link";
 import { siteConfig } from "@/lib/site";
 
 export default function Footer() {
-  const { contact, social, nav } = siteConfig;
+  const { contact, social, nav, locations } = siteConfig;
 
   return (
     <footer className="border-t border-slate-200 bg-slate-900 text-slate-300">
@@ -64,6 +64,12 @@ export default function Footer() {
                 >
                   {contact.email}
                 </a>
+              </p>
+              <p className="pt-1 text-xs text-slate-400">
+                Departure points:{" "}
+                {locations.departurePoints
+                  .map((d) => `${d.name} (${d.address.city}, ${d.address.state})`)
+                  .join(" · ")}
               </p>
             </address>
           </div>

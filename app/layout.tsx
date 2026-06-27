@@ -3,7 +3,9 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import JsonLd from "@/components/JsonLd";
 import { siteConfig } from "@/lib/site";
+import { localBusinessJsonLd, serviceJsonLd } from "@/lib/seo";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -57,6 +59,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.variable} font-sans antialiased`}>
+        <JsonLd data={[localBusinessJsonLd(), serviceJsonLd()]} />
         <Header />
         <main className="min-h-screen">{children}</main>
         <Footer />

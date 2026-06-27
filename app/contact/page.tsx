@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { pageOpenGraph } from "@/lib/seo";
 import ContactForm from "@/components/ContactForm";
 import { siteConfig } from "@/lib/site";
@@ -15,7 +16,7 @@ export const metadata: Metadata = {
 };
 
 export default function ContactPage() {
-  const { contact, social } = siteConfig;
+  const { contact, social, locations } = siteConfig;
 
   return (
     <>
@@ -43,7 +44,9 @@ export default function ContactPage() {
 
             <dl className="mt-8 space-y-4 text-sm">
               <div>
-                <dt className="font-semibold text-slate-900">Address</dt>
+                <dt className="font-semibold text-slate-900">
+                  Main Office (NJ / NY)
+                </dt>
                 <dd className="text-slate-600">
                   {contact.address.street}, {contact.address.city},{" "}
                   {contact.address.state} {contact.address.zip}
@@ -115,6 +118,129 @@ export default function ContactPage() {
             </h2>
             <ContactForm />
           </div>
+        </div>
+      </section>
+
+      {/* ── Where We Fish — Locations ─────────────────────────────────── */}
+      <section className="bg-slate-50 px-4 py-16 sm:py-20">
+        <div className="mx-auto max-w-5xl">
+          <h2 className="text-3xl font-bold tracking-tight text-slate-900">
+            Where We Fish
+          </h2>
+          <p className="mt-3 max-w-2xl text-slate-600">
+            Our home base is in {locations.primary.address.city},{" "}
+            {locations.primary.address.state}. Trips run from two marinas, each
+            suited to a different fishery. Booking for every trip is the same
+            toll-free line —{" "}
+            <a
+              href={`tel:${contact.phoneTel}`}
+              className="font-medium text-sky-600 hover:text-sky-700"
+            >
+              {contact.phone}
+            </a>
+            . The marina numbers below reach the docks themselves and are not for
+            booking.
+          </p>
+
+          <div className="mt-10 grid gap-6 md:grid-cols-3">
+            {/* Primary / office (sole NAP anchor) */}
+            <div className="rounded-xl bg-white p-6 shadow-sm ring-1 ring-slate-200">
+              <p className="text-xs font-semibold uppercase tracking-wide text-sky-700">
+                {locations.primary.role}
+              </p>
+              <h3 className="mt-1 text-lg font-bold text-slate-900">
+                {locations.primary.name}
+              </h3>
+              <address className="mt-2 text-sm not-italic text-slate-600">
+                {locations.primary.address.street}
+                <br />
+                {locations.primary.address.city},{" "}
+                {locations.primary.address.state}{" "}
+                {locations.primary.address.zip}
+              </address>
+              <a
+                href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+                  `${locations.primary.address.street}, ${locations.primary.address.city}, ${locations.primary.address.state} ${locations.primary.address.zip}`,
+                )}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-3 inline-block text-sm font-medium text-sky-600 hover:text-sky-700"
+              >
+                View on Google Maps &rarr;
+              </a>
+            </div>
+
+            {/* Departure points (places operated from — not separate businesses) */}
+            {locations.departurePoints.map((dp) => (
+              <div
+                key={dp.name}
+                className="rounded-xl bg-white p-6 shadow-sm ring-1 ring-slate-200"
+              >
+                <p className="text-xs font-semibold uppercase tracking-wide text-sky-700">
+                  {dp.role}
+                </p>
+                <h3 className="mt-1 text-lg font-bold text-slate-900">
+                  {dp.name}
+                </h3>
+                <address className="mt-2 text-sm not-italic text-slate-600">
+                  {dp.address.street}
+                  <br />
+                  {dp.address.city}, {dp.address.state} {dp.address.zip}
+                </address>
+                <p className="mt-3 text-sm leading-relaxed text-slate-700">
+                  {dp.fishery}
+                </p>
+                <Link
+                  href={dp.speciesHref}
+                  className="mt-2 inline-block text-sm font-medium text-sky-600 hover:text-sky-700"
+                >
+                  View species &amp; seasons &rarr;
+                </Link>
+                <p className="mt-4 text-xs text-slate-500">
+                  <span className="font-semibold text-slate-600">
+                    Marina line:{" "}
+                  </span>
+                  <a
+                    href={`tel:+1${dp.marinaPhone.replace(/\D/g, "")}`}
+                    className="text-slate-600 underline"
+                  >
+                    {dp.marinaPhone}
+                  </a>{" "}
+                  <span className="text-slate-400">
+                    (dock info — not for booking)
+                  </span>
+                </p>
+                <a
+                  href={`https://www.google.com/maps/search/?api=1&query=${dp.geo.lat},${dp.geo.lng}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-2 inline-block text-sm font-medium text-sky-600 hover:text-sky-700"
+                >
+                  View on Google Maps &rarr;
+                </a>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── National Reach ───────────────────────────────────────────── */}
+      <section className="px-4 py-16 sm:py-20">
+        <div className="mx-auto max-w-3xl text-center">
+          <h2 className="text-3xl font-bold tracking-tight text-slate-900">
+            National Reach
+          </h2>
+          <p className="mx-auto mt-4 max-w-2xl text-lg leading-relaxed text-slate-600">
+            SouthStar Charters operates from our NJ/NY home waters and serves
+            anglers across the country. Wherever you want to fish, we go where
+            the fish are.
+          </p>
+          <a
+            href={`tel:${contact.phoneTel}`}
+            className="mt-8 inline-block rounded-md bg-sky-600 px-6 py-3 text-base font-semibold text-white shadow-sm transition-colors hover:bg-sky-700"
+          >
+            Call {contact.phone} to Book
+          </a>
         </div>
       </section>
     </>
