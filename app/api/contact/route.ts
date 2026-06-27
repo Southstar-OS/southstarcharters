@@ -10,6 +10,21 @@ function getResend() {
   return new Resend(key);
 }
 
+/** Escape user input before embedding it in the notification email HTML. */
+function escapeHtml(value: unknown): string {
+  return String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+/** Collapse newlines so user input can't inject headers into the email subject. */
+function singleLine(value: unknown): string {
+  return String(value ?? "").replace(/[\r\n]+/g, " ").slice(0, 200);
+}
+
 export async function POST(request: Request) {
   try {
     const body = await request.json();
@@ -44,17 +59,17 @@ export async function POST(request: Request) {
       await resend.emails.send({
         from: `SouthStar Charters <${fromEmail}>`,
         to: [notificationEmail],
-        subject: `New Inquiry: ${inquiryType ?? "General"} from ${name}`,
+        subject: `New Inquiry: ${singleLine(inquiryType ?? "General")} from ${singleLine(name)}`,
         html: `
           <h2>New Contact Form Submission</h2>
           <table style="border-collapse:collapse;width:100%;max-width:600px;">
-            <tr><td style="padding:8px;font-weight:bold;">Name</td><td style="padding:8px;">${name}</td></tr>
-            <tr><td style="padding:8px;font-weight:bold;">Email</td><td style="padding:8px;"><a href="mailto:${email}">${email}</a></td></tr>
-            <tr><td style="padding:8px;font-weight:bold;">Phone</td><td style="padding:8px;">${phone ?? "Not provided"}</td></tr>
-            <tr><td style="padding:8px;font-weight:bold;">Inquiry Type</td><td style="padding:8px;">${inquiryType ?? "Not specified"}</td></tr>
-            <tr><td style="padding:8px;font-weight:bold;">Message</td><td style="padding:8px;">${message}</td></tr>
+            <tr><td style="padding:8px;font-weight:bold;">Name</td><td style="padding:8px;">${escapeHtml(name)}</td></tr>
+            <tr><td style="padding:8px;font-weight:bold;">Email</td><td style="padding:8px;"><a href="mailto:${escapeHtml(email)}">${escapeHtml(email)}</a></td></tr>
+            <tr><td style="padding:8px;font-weight:bold;">Phone</td><td style="padding:8px;">${escapeHtml(phone ?? "Not provided")}</td></tr>
+            <tr><td style="padding:8px;font-weight:bold;">Inquiry Type</td><td style="padding:8px;">${escapeHtml(inquiryType ?? "Not specified")}</td></tr>
+            <tr><td style="padding:8px;font-weight:bold;">Message</td><td style="padding:8px;white-space:pre-wrap;">${escapeHtml(message)}</td></tr>
           </table>
-          <p style="margin-top:16px;font-size:12px;color:#666;">Lead ID: ${lead.id}</p>
+          <p style="margin-top:16px;font-size:12px;color:#666;">Lead ID: ${escapeHtml(lead.id)}</p>
         `,
       });
     }
