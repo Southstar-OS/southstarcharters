@@ -2,8 +2,13 @@
  * North Atlantic Fish Species & Seasons — OWNER-CONTROLLED DATA
  * ============================================================================
  *
- * ⚠️  EVERY season window, size limit, and bag limit in this file is an
- *     UNFILLED PLACEHOLDER. There is NO real regulatory data here.
+ * ⚠️  MIXED STATE. The state/interstate species (striped bass, summer flounder,
+ *     bluefish, weakfish, false albacore, Atlantic bonito) carry verified 2026
+ *     New Jersey recreational rules, sourced from the NJ DEP "Attention Anglers"
+ *     2026 summary (https://dep.nj.gov/njfw/fishing/marine/seasons-and-regulations/,
+ *     dated March 2026) and confirmed by the owner — those entries have
+ *     `verify: false`. The offshore / HMS species are STILL UNFILLED PLACEHOLDERS
+ *     (`verify: true`), pending a schema decision and verification.
  *
  *     Placeholder windows use the SENTINEL value "00-00" (an impossible date) so
  *     they are self-evidently fake at the data layer — not just behind a UI
@@ -95,7 +100,7 @@ export interface Species {
   waterType: "inshore" | "offshore" | "both";
   permitRequired: boolean;
   seasons: Season[];
-  verify: true;
+  verify: boolean;
   /** Optional NOAA public-domain image; rendered only when rightsVerified. */
   image?: SpeciesImage;
   /**
@@ -149,10 +154,26 @@ export const species: Species[] = [
     waterType: "inshore",
     permitRequired: false,
     seasons: [
-      pending("interstate", "PLACEHOLDER — ASMFC striped bass plan, pending verification"),
-      pending("state", "PLACEHOLDER — NJ state waters, pending verification"),
+      {
+        jurisdiction: "interstate",
+        openDate: "01-01",
+        closeDate: "12-31",
+        minSizeInches: 28,
+        bagLimit: 1,
+        notes:
+          "Slot 28–31 in (1 fish), ASMFC rule as implemented by NJ. Harvest is prohibited in federal waters (>3 mi).",
+      },
+      {
+        jurisdiction: "state",
+        openDate: "01-01",
+        closeDate: "12-31",
+        minSizeInches: 28,
+        bagLimit: 1,
+        notes:
+          "Slot 28–31 in (1 fish), NJ ocean waters 0–3 mi, no closed season. See the NJ Marine Digest for the Bonus Program, circle-hook and gaff rules.",
+      },
     ],
-    verify: true,
+    verify: false,
   },
   {
     commonName: "Summer Flounder (Fluke)",
@@ -170,10 +191,25 @@ export const species: Species[] = [
     waterType: "both",
     permitRequired: false,
     seasons: [
-      pending("federal", "PLACEHOLDER — federal window may differ from state, pending verification"),
-      pending("state", "PLACEHOLDER — NJ state window, pending verification"),
+      {
+        jurisdiction: "federal",
+        openDate: "05-04",
+        closeDate: "09-25",
+        minSizeInches: 18,
+        bagLimit: 3,
+        notes: "Follows the NJ-implemented recreational measures in federal waters.",
+      },
+      {
+        jurisdiction: "state",
+        openDate: "05-04",
+        closeDate: "09-25",
+        minSizeInches: 18,
+        bagLimit: 3,
+        notes:
+          "NJ ocean rule. Special areas differ: Delaware Bay 3 @ 17 in; Island Beach State Park 2 @ 16 in.",
+      },
     ],
-    verify: true,
+    verify: false,
   },
   {
     commonName: "Bluefish",
@@ -190,8 +226,17 @@ export const species: Species[] = [
       "The stock is not overfished and is not subject to overfishing.",
     waterType: "both",
     permitRequired: false,
-    seasons: [pending("interstate", "PLACEHOLDER — ASMFC bluefish plan, pending verification")],
-    verify: true,
+    seasons: [
+      {
+        jurisdiction: "interstate",
+        openDate: "01-01",
+        closeDate: "12-31",
+        bagLimit: 7,
+        notes:
+          "7 fish on a for-hire vessel; 5 for private/shore anglers. No minimum size.",
+      },
+    ],
+    verify: false,
   },
   {
     commonName: "Weakfish",
@@ -200,10 +245,23 @@ export const species: Species[] = [
     waterType: "inshore",
     permitRequired: false,
     seasons: [
-      pending("interstate", "PLACEHOLDER — ASMFC weakfish plan, pending verification"),
-      pending("state", "PLACEHOLDER — NJ state waters, pending verification"),
+      {
+        jurisdiction: "interstate",
+        openDate: "01-01",
+        closeDate: "12-31",
+        minSizeInches: 13,
+        bagLimit: 1,
+        notes: "ASMFC rule as implemented by NJ.",
+      },
+      {
+        jurisdiction: "state",
+        openDate: "01-01",
+        closeDate: "12-31",
+        minSizeInches: 13,
+        bagLimit: 1,
+      },
     ],
-    verify: true,
+    verify: false,
   },
   {
     commonName: "False Albacore (Little Tunny)",
@@ -211,8 +269,15 @@ export const species: Species[] = [
     slug: "false-albacore",
     waterType: "inshore",
     permitRequired: false,
-    seasons: [pending("state", "PLACEHOLDER — confirm NJ status, pending verification")],
-    verify: true,
+    seasons: [
+      {
+        jurisdiction: "state",
+        openDate: "01-01",
+        closeDate: "12-31",
+        notes: "No NJ size or possession limit (not listed in the NJ recreational summary).",
+      },
+    ],
+    verify: false,
   },
   {
     commonName: "Atlantic Bonito",
@@ -220,8 +285,15 @@ export const species: Species[] = [
     slug: "atlantic-bonito",
     waterType: "inshore",
     permitRequired: false,
-    seasons: [pending("state", "PLACEHOLDER — confirm NJ status, pending verification")],
-    verify: true,
+    seasons: [
+      {
+        jurisdiction: "state",
+        openDate: "01-01",
+        closeDate: "12-31",
+        notes: "No NJ size or possession limit (not listed in the NJ recreational summary).",
+      },
+    ],
+    verify: false,
   },
 
   // ── Offshore canyons — HMS species are federally managed & permit-required ──
