@@ -33,10 +33,9 @@ export function pageOpenGraph(opts: {
  * so this one object also carries the Organization signals (name, url, image,
  * sameAs).
  *
- * `geo` is intentionally OMITTED: the verified Business Profile data provides no
- * coordinate for the Wyckoff anchor, and a coordinate must not be invented (a
- * wrong one misplaces the business in maps). The marinas have coordinates, but
- * they are departure points, not this LocalBusiness.
+ * `geo` is the owner-confirmed approximate coordinate for the Wyckoff anchor
+ * (block-level precision). The departure-point marinas have their own
+ * coordinates but are not this LocalBusiness.
  *
  * `openingHours` is omitted for the same reason — no verified hours were provided.
  */
@@ -59,6 +58,11 @@ export function localBusinessJsonLd() {
       addressRegion: contact.address.state,
       postalCode: contact.address.zip,
       addressCountry: "US",
+    },
+    geo: {
+      "@type": "GeoCoordinates",
+      latitude: 40.984,
+      longitude: -74.151,
     },
     sameAs: [social.facebook, social.instagram],
   };
