@@ -129,8 +129,9 @@ export default function ContactPage() {
           </h2>
           <p className="mt-3 max-w-2xl text-slate-600">
             Our home base is in {locations.primary.address.city},{" "}
-            {locations.primary.address.state}. Trips run from two marinas, each
-            suited to a different fishery. Booking for every trip is the same
+            {locations.primary.address.state}. Trips run from several marinas
+            along the New Jersey and New York coast, each suited to a different
+            fishery. Booking for every trip is the same
             toll-free line —{" "}
             <a
               href={`tel:${contact.phoneTel}`}
@@ -221,6 +222,18 @@ export default function ContactPage() {
               </div>
             ))}
           </div>
+
+          {locations.pickupLocations.length > 0 && (
+            <p className="mt-6 text-sm text-slate-500">
+              <span className="font-semibold text-slate-600">
+                Additional pickup locations:
+              </span>{" "}
+              {locations.pickupLocations
+                .map((p) => `${p.name} (${p.city}, ${p.state})`)
+                .join(" · ")}
+              . Contact us to arrange the pickup point for your trip.
+            </p>
+          )}
         </div>
       </section>
 

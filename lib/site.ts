@@ -70,6 +70,15 @@ export const siteConfig = {
         fishery: "Seasonal striped bass.",
       },
     ],
+    /**
+     * Additional pickup locations the owner operates from but for which no
+     * verified coordinates or marina phone are published. They carry name +
+     * town only — no map link, no phone, nothing invented. Not NAP anchors.
+     */
+    pickupLocations: [
+      { name: "Light House Marina", city: "Barnegat Light", state: "NJ" },
+      { name: "Shark River", city: "Belmar", state: "NJ" },
+    ],
   },
 
   social: {
