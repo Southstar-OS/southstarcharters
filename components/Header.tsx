@@ -44,6 +44,7 @@ export default function Header() {
           className="inline-flex items-center justify-center rounded-md p-2 text-slate-700 md:hidden"
           onClick={() => setMobileOpen(!mobileOpen)}
           aria-expanded={mobileOpen}
+          aria-controls="mobile-nav"
           aria-label="Toggle navigation menu"
         >
           <svg
@@ -52,6 +53,7 @@ export default function Header() {
             viewBox="0 0 24 24"
             strokeWidth={1.5}
             stroke="currentColor"
+            aria-hidden="true"
           >
             {mobileOpen ? (
               <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -64,6 +66,7 @@ export default function Header() {
 
       {/* Mobile Navigation */}
       <div
+        id="mobile-nav"
         className={cn(
           "border-t border-slate-200 bg-white md:hidden",
           mobileOpen ? "block" : "hidden"

@@ -21,9 +21,9 @@ export default function GalleryPreview({ limit = 6 }: GalleryPreviewProps) {
         </p>
 
         <div className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3">
-          {items.map((img, i) => (
+          {items.map((img) => (
             <div
-              key={i}
+              key={img.src}
               className="group relative aspect-square overflow-hidden rounded-lg bg-slate-200"
             >
               <Image

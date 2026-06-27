@@ -33,7 +33,9 @@ export default function GalleryPage() {
           {categories.map((cat) => (
             <button
               key={cat}
+              type="button"
               onClick={() => setActive(cat)}
+              aria-pressed={active === cat}
               className={cn(
                 "rounded-full px-4 py-1.5 text-sm font-medium transition-colors",
                 active === cat
@@ -50,9 +52,9 @@ export default function GalleryPage() {
       {/* ── Gallery Grid ─────────────────────────────────────────────── */}
       <section className="px-4 pb-16 sm:pb-20">
         <div className="mx-auto grid max-w-7xl grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-          {filtered.map((img, i) => (
+          {filtered.map((img) => (
             <div
-              key={i}
+              key={img.src}
               className="group relative aspect-square overflow-hidden rounded-lg bg-slate-200"
             >
               <Image
