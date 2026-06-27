@@ -74,6 +74,7 @@ export default function ContactForm() {
           type="text"
           id="name"
           name="name"
+          autoComplete="name"
           required
           className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-slate-900 shadow-sm placeholder:text-slate-400 focus:border-sky-500 focus:outline-none focus:ring-1 focus:ring-sky-500"
           placeholder="Your full name"
@@ -89,6 +90,7 @@ export default function ContactForm() {
           type="email"
           id="email"
           name="email"
+          autoComplete="email"
           required
           className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-slate-900 shadow-sm placeholder:text-slate-400 focus:border-sky-500 focus:outline-none focus:ring-1 focus:ring-sky-500"
           placeholder="you@example.com"
@@ -104,6 +106,7 @@ export default function ContactForm() {
           type="tel"
           id="phone"
           name="phone"
+          autoComplete="tel"
           className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-slate-900 shadow-sm placeholder:text-slate-400 focus:border-sky-500 focus:outline-none focus:ring-1 focus:ring-sky-500"
           placeholder="(555) 555-5555"
         />
@@ -151,12 +154,18 @@ export default function ContactForm() {
 
       {/* Status Messages */}
       {formState.status === "success" && (
-        <div className="rounded-md bg-green-50 p-4 text-sm text-green-800 ring-1 ring-green-200">
+        <div
+          role="status"
+          className="rounded-md bg-green-50 p-4 text-sm text-green-800 ring-1 ring-green-200"
+        >
           {formState.message}
         </div>
       )}
       {formState.status === "error" && (
-        <div className="rounded-md bg-red-50 p-4 text-sm text-red-800 ring-1 ring-red-200">
+        <div
+          role="alert"
+          className="rounded-md bg-red-50 p-4 text-sm text-red-800 ring-1 ring-red-200"
+        >
           {formState.message}
         </div>
       )}
