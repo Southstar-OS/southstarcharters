@@ -1,17 +1,15 @@
 name: Security Headers Check
 
 on:
-  workflow_run:
-    workflows: ["Deploy to Vercel"]
-    types: [completed]
-    branches: [main]
+  # Vercel's Git integration deploys on push; audit the live site on a schedule.
+  schedule:
+    - cron: "30 7 * * *"
   workflow_dispatch:
 
 jobs:
   check-headers:
     name: Verify Security Headers
     runs-on: ubuntu-latest
-    if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch' }}
     steps:
       - name: Check security headers
         run: |
