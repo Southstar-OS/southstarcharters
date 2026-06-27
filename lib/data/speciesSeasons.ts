@@ -7,11 +7,11 @@
  *     New Jersey recreational rules, sourced from the NJ DEP "Attention Anglers"
  *     2026 summary (https://dep.nj.gov/njfw/fishing/marine/seasons-and-regulations/,
  *     dated March 2026) and confirmed by the owner — those entries have
- *     `verify: false`. Most offshore / HMS species (bluefin, yellowfin, bigeye,
- *     albacore, marlin, swordfish) now carry NOAA HMS recreational values but are
- *     still SOURCED-NOT-CONFIRMED (`verify: true`) pending the owner's check
- *     against the NOAA HMS Compliance Guide. Mahi and Wahoo remain UNFILLED
- *     sentinel placeholders (`verify: true`) — values could not be sourced.
+ *     `verify: false`. The offshore species (bluefin, yellowfin, bigeye,
+ *     albacore, marlin, swordfish from the NOAA HMS pages; mahi and wahoo from
+ *     the SAFMC Dolphin & Wahoo FMP) carry sourced values but are still
+ *     SOURCED-NOT-CONFIRMED (`verify: true`) pending the owner's check against
+ *     the governing authority. No species remains an unfilled placeholder.
  *
  *     Placeholder windows use the SENTINEL value "00-00" (an impossible date) so
  *     they are self-evidently fake at the data layer — not just behind a UI
@@ -125,21 +125,12 @@ export const JURISDICTION_LABELS: Record<
   state: { label: "State", authority: "NJ Fish & Wildlife (0–3 nmi)" },
 };
 
-/** Every season starts as an unfilled, sentinel placeholder. // VERIFY before publish. */
-function pending(jurisdiction: Jurisdiction, notes: string): Season {
-  // VERIFY: owner replaces 00-00 with a real MM-DD window + size/bag from the
-  // governing authority (see sourcing map in the file header) before publish.
-  return {
-    jurisdiction,
-    openDate: PLACEHOLDER_DATE,
-    closeDate: PLACEHOLDER_DATE,
-    notes,
-  };
-}
-
 /**
- * Target species, grounded in content/rates.json. ALL seasons are unfilled
- * sentinel placeholders pending owner verification.
+ * Target species, grounded in content/rates.json. Inshore species carry verified
+ * 2026 NJ rules (`verify: false`); offshore species carry sourced NOAA / SAFMC
+ * values flagged `verify: true` pending owner confirmation. The "00-00" sentinel
+ * + `isPlaceholderSeason` machinery remains available for any future unfilled
+ * species (set openDate/closeDate to PLACEHOLDER_DATE).
  */
 export const species: Species[] = [
   // ── Inshore / nearshore (state + interstate jurisdictions matter here) ──
@@ -425,7 +416,17 @@ export const species: Species[] = [
       "The population level is unknown, but management measures are in place.",
     waterType: "offshore",
     permitRequired: false, // federally managed (Mid-Atlantic) but NOT an HMS permit species
-    seasons: [pending("federal", "PLACEHOLDER — Mid-Atlantic FMP, pending verification")],
+    seasons: [
+      {
+        jurisdiction: "federal",
+        openDate: "01-01",
+        closeDate: "12-31",
+        bagLimit: 10,
+        limitNote:
+          "60/vessel max; no Mid-Atlantic minimum size (20 in fork length applies only off GA/FL).",
+        notes: "U.S. Atlantic Dolphin & Wahoo FMP (SAFMC). Not an HMS permit species.",
+      },
+    ],
     verify: true,
   },
   {
@@ -443,7 +444,16 @@ export const species: Species[] = [
       "The stock has not been assessed; population levels are unknown, but management measures are in place.",
     waterType: "offshore",
     permitRequired: false, // federally managed but NOT an HMS permit species
-    seasons: [pending("federal", "PLACEHOLDER — federal management, pending verification")],
+    seasons: [
+      {
+        jurisdiction: "federal",
+        openDate: "01-01",
+        closeDate: "12-31",
+        bagLimit: 2,
+        limitNote: "No minimum size; must be landed with head and fins intact.",
+        notes: "U.S. Atlantic Dolphin & Wahoo FMP (SAFMC). Not an HMS permit species.",
+      },
+    ],
     verify: true,
   },
   {
