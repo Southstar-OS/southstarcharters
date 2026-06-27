@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { Resend } from "resend";
+import { z } from "zod";
 
 // Lazily initialize Resend so the build does not fail when the
 // RESEND_API_KEY env var is not yet set.
@@ -25,18 +26,57 @@ function singleLine(value: unknown): string {
   return String(value ?? "").replace(/[\r\n]+/g, " ").slice(0, 200);
 }
 
+/** Validated, length-capped shape of a contact submission. */
+const contactSchema = z.object({
+  name: z.string().trim().min(1, "Name is required.").max(100),
+  email: z
+    .string()
+    .trim()
+    .min(3)
+    .max(200)
+    .refine((v) => /.+@.+\..+/.test(v), "A valid email is required."),
+  phone: z.string().trim().max(50).optional(),
+  inquiryType: z.string().trim().max(100).optional(),
+  message: z.string().trim().min(1, "Message is required.").max(5000),
+});
+
+// Best-effort in-memory rate limit (per server instance). Durable, multi-instance
+// limiting (e.g. on serverless) needs an external store such as Upstash/Redis.
+const RATE_LIMIT = 5;
+const RATE_WINDOW_MS = 10 * 60 * 1000;
+const recentHitsByIp = new Map<string, number[]>();
+
+function isRateLimited(ip: string): boolean {
+  const now = Date.now();
+  const hits = (recentHitsByIp.get(ip) ?? []).filter(
+    (t) => now - t < RATE_WINDOW_MS,
+  );
+  hits.push(now);
+  recentHitsByIp.set(ip, hits);
+  return hits.length > RATE_LIMIT;
+}
+
 export async function POST(request: Request) {
   try {
-    const body = await request.json();
-    const { name, email, phone, inquiryType, message } = body;
-
-    // ── Basic validation ──────────────────────────────────────────────
-    if (!name || !email || !message) {
+    const ip =
+      request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+      "unknown";
+    if (isRateLimited(ip)) {
       return NextResponse.json(
-        { error: "Name, email, and message are required." },
+        { error: "Too many requests. Please try again in a little while." },
+        { status: 429 }
+      );
+    }
+
+    // ── Validate input (rejects oversized / malformed payloads) ───────
+    const parsed = contactSchema.safeParse(await request.json());
+    if (!parsed.success) {
+      return NextResponse.json(
+        { error: "Please check your entries and try again." },
         { status: 400 }
       );
     }
+    const { name, email, phone, inquiryType, message } = parsed.data;
 
     // ── Save lead to Neon Postgres ────────────────────────────────────
     const lead = await prisma.lead.create({
