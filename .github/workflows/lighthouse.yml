@@ -1,19 +1,15 @@
 name: Lighthouse Audit
 
 on:
-  # Run after production deploys
-  workflow_run:
-    workflows: ["Deploy to Vercel"]
-    types: [completed]
-    branches: [main]
-  # Allow manual trigger
+  # Vercel's Git integration deploys on push; audit the live site on a schedule.
+  schedule:
+    - cron: "0 7 * * *"
   workflow_dispatch:
 
 jobs:
   lighthouse:
     name: Lighthouse Performance Audit
     runs-on: ubuntu-latest
-    if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch' }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v7
