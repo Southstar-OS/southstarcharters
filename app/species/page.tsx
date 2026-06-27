@@ -49,10 +49,11 @@ export default function SpeciesPage() {
             governing authority before fishing.
           </p>
           <p className="mt-2 text-xs text-amber-800">
-            The inshore species below show 2026 New Jersey recreational rules
-            (NJ Division of Fish &amp; Wildlife). Offshore / HMS species are still
-            marked &ldquo;unverified placeholder&rdquo; and are not current
-            regulatory data. Always confirm with the governing authority.
+            Inshore species show 2026 New Jersey recreational rules (NJ Division
+            of Fish &amp; Wildlife). Offshore / HMS species show NOAA HMS values
+            marked &ldquo;Unverified — confirm with NOAA&rdquo;; Mahi and Wahoo
+            remain unverified placeholders. Always confirm with the governing
+            authority before fishing.
           </p>
         </div>
       </section>

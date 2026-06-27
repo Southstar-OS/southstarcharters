@@ -7,8 +7,11 @@
  *     New Jersey recreational rules, sourced from the NJ DEP "Attention Anglers"
  *     2026 summary (https://dep.nj.gov/njfw/fishing/marine/seasons-and-regulations/,
  *     dated March 2026) and confirmed by the owner — those entries have
- *     `verify: false`. The offshore / HMS species are STILL UNFILLED PLACEHOLDERS
- *     (`verify: true`), pending a schema decision and verification.
+ *     `verify: false`. Most offshore / HMS species (bluefin, yellowfin, bigeye,
+ *     albacore, marlin, swordfish) now carry NOAA HMS recreational values but are
+ *     still SOURCED-NOT-CONFIRMED (`verify: true`) pending the owner's check
+ *     against the NOAA HMS Compliance Guide. Mahi and Wahoo remain UNFILLED
+ *     sentinel placeholders (`verify: true`) — values could not be sourced.
  *
  *     Placeholder windows use the SENTINEL value "00-00" (an impossible date) so
  *     they are self-evidently fake at the data layer — not just behind a UI
@@ -72,6 +75,8 @@ export interface Season {
   closeDate: string; // "MM-DD" or PLACEHOLDER_DATE
   minSizeInches?: number;
   bagLimit?: number;
+  /** Free-text limit when it is not a single per-person integer (e.g. "No limit", per-vessel caps, quotas). */
+  limitNote?: string;
   notes?: string;
 }
 
@@ -312,7 +317,17 @@ export const species: Species[] = [
       "Western Atlantic bluefin tuna is not subject to overfishing; its overfished status is unknown. It is managed under a rebuilding plan.",
     waterType: "offshore",
     permitRequired: true, // NOAA HMS
-    seasons: [pending("federal", "PLACEHOLDER — NOAA HMS, pending verification")],
+    seasons: [
+      {
+        jurisdiction: "federal",
+        openDate: "01-01",
+        closeDate: "12-31",
+        minSizeInches: 27,
+        limitNote:
+          "Category system: 2/vessel/day (27–<73 in); trophy 73 in+ is 1/vessel/year with area closures. Limits change in-season — confirm with NOAA.",
+        notes: "NOAA HMS Angling permit required.",
+      },
+    ],
     verify: true,
   },
   {
@@ -330,7 +345,16 @@ export const species: Species[] = [
       "The stock is not overfished and is not subject to overfishing.",
     waterType: "offshore",
     permitRequired: true, // NOAA HMS
-    seasons: [pending("federal", "PLACEHOLDER — NOAA HMS, pending verification")],
+    seasons: [
+      {
+        jurisdiction: "federal",
+        openDate: "01-01",
+        closeDate: "12-31",
+        minSizeInches: 27,
+        bagLimit: 3,
+        notes: "27 in curved fork length. NOAA HMS Angling permit required.",
+      },
+    ],
     verify: true,
   },
   {
@@ -348,7 +372,16 @@ export const species: Species[] = [
       "The stock is overfished, but the fishing rate established under a conservation and management plan promotes population growth.",
     waterType: "offshore",
     permitRequired: true, // NOAA HMS
-    seasons: [pending("federal", "PLACEHOLDER — NOAA HMS, pending verification")],
+    seasons: [
+      {
+        jurisdiction: "federal",
+        openDate: "01-01",
+        closeDate: "12-31",
+        minSizeInches: 27,
+        limitNote: "No federal retention limit",
+        notes: "27 in curved fork length. NOAA HMS Angling permit required.",
+      },
+    ],
     verify: true,
   },
   {
@@ -366,7 +399,15 @@ export const species: Species[] = [
       "North Atlantic albacore is not overfished and not subject to overfishing.",
     waterType: "offshore",
     permitRequired: true, // NOAA HMS
-    seasons: [pending("federal", "PLACEHOLDER — NOAA HMS, pending verification")],
+    seasons: [
+      {
+        jurisdiction: "federal",
+        openDate: "01-01",
+        closeDate: "12-31",
+        limitNote: "No minimum size or federal retention limit",
+        notes: "NOAA HMS Angling permit required.",
+      },
+    ],
     verify: true,
   },
   {
@@ -411,7 +452,18 @@ export const species: Species[] = [
     slug: "marlin-billfish",
     waterType: "offshore",
     permitRequired: true, // NOAA HMS billfish
-    seasons: [pending("federal", "PLACEHOLDER — NOAA HMS billfish, pending verification")],
+    seasons: [
+      {
+        jurisdiction: "federal",
+        openDate: "01-01",
+        closeDate: "12-31",
+        minSizeInches: 99,
+        limitNote:
+          "No individual limit; 250/year U.S. national landings quota (blue + white marlin + roundscale spearfish combined).",
+        notes:
+          "Blue marlin 99 in / white marlin 66 in lower-jaw fork length. NOAA HMS permit; catch-and-release encouraged.",
+      },
+    ],
     verify: true,
   },
   {
@@ -429,7 +481,18 @@ export const species: Species[] = [
       "The stock is not overfished and is not subject to overfishing.",
     waterType: "offshore",
     permitRequired: true, // NOAA HMS
-    seasons: [pending("federal", "PLACEHOLDER — NOAA HMS, pending verification")],
+    seasons: [
+      {
+        jurisdiction: "federal",
+        openDate: "01-01",
+        closeDate: "12-31",
+        minSizeInches: 47,
+        bagLimit: 1,
+        limitNote: "up to 4/vessel/trip",
+        notes:
+          "47 in lower-jaw fork length (or 25 in cleithrum to keel). NOAA HMS permit required.",
+      },
+    ],
     verify: true,
   },
 ];

@@ -6,6 +6,7 @@ import {
 } from "@/lib/data/speciesSeasons";
 import {
   getSeasonStatus,
+  isPlaceholderSeason,
   monthsInWindow,
   MONTH_ABBREVIATIONS,
 } from "@/lib/seasons";
@@ -16,11 +17,14 @@ interface SeasonCalendarProps {
   referenceDate?: Date;
 }
 
-/** Small amber badge flagging that the underlying data is an unverified placeholder. */
-function UnverifiedBadge() {
+/**
+ * Small amber badge for unverified data. "placeholder" = no real values yet
+ * (sentinel windows); otherwise the values are sourced but not owner-confirmed.
+ */
+function UnverifiedBadge({ placeholder }: { placeholder: boolean }) {
   return (
     <span className="inline-flex items-center rounded-full bg-amber-100 px-2 py-0.5 text-xs font-medium text-amber-800 ring-1 ring-amber-200">
-      Unverified placeholder
+      {placeholder ? "Unverified placeholder" : "Unverified — confirm with NOAA"}
     </span>
   );
 }
@@ -64,7 +68,11 @@ export default function SeasonCalendar({
                 NOAA HMS permit required
               </span>
             )}
-            {sp.verify && <UnverifiedBadge />}
+            {sp.verify && (
+              <UnverifiedBadge
+                placeholder={sp.seasons.some(isPlaceholderSeason)}
+              />
+            )}
           </div>
 
           {/* Per-jurisdiction seasons */}
@@ -141,7 +149,9 @@ export default function SeasonCalendar({
                             Bag limit
                           </dt>
                           <dd className="text-slate-800">
-                            {season.bagLimit != null ? `${season.bagLimit}` : "—"}
+                            {season.bagLimit != null
+                              ? `${season.bagLimit}${season.limitNote ? ` (${season.limitNote})` : ""}`
+                              : (season.limitNote ?? "—")}
                           </dd>
                         </div>
                         <div className="col-span-2 sm:col-span-1">
