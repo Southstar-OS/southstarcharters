@@ -12,7 +12,6 @@ concurrency:
 
 permissions:
   contents: read
-
 env:
   NODE_VERSION: "22"
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
@@ -95,7 +94,7 @@ jobs:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
 
       - name: Generate Prisma client
-        run: vercel build
+        run: npx prisma generate
 
       - name: Build project
         run: pnpm build
