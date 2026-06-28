@@ -95,7 +95,7 @@ jobs:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
 
       - name: Generate Prisma client
-        run: npx prisma generate
+        run: vercel build
 
       - name: Build project
         run: pnpm build
