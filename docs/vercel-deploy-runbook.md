@@ -72,3 +72,12 @@ workflow** (workflow_dispatch), or **Re-run failed jobs** on the latest run.
 - For zero maintenance, the Vercel **Git integration** (connect the repo in the
   Vercel dashboard) deploys without storing a CLI token in GitHub at all — an
   alternative to this token-based workflow.
+
+## What the workflow does to surface this faster
+
+The workflow (`deploy.yml`) includes a **"Verify Vercel secrets are configured"**
+preflight step in both jobs. If any of the three secrets are empty, the job fails
+immediately with a clear error message pointing to this runbook, before spending
+time installing dependencies or the Vercel CLI. Each `vercel` CLI call also passes
+`--token=$VERCEL_TOKEN` explicitly (in addition to the env var) to ensure
+authentication works correctly with newer CLI versions.
