@@ -153,7 +153,7 @@ export default function ContactForm() {
       </div>
 
       {/* Status Messages */}
-      <div aria-live="polite" aria-atomic="true">
+      <div>
         {formState.status === "success" && (
           <div
             role="status"
