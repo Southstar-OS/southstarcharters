@@ -57,7 +57,7 @@ jobs:
       - name: Pull Vercel project settings
         run: |
           npm install -g vercel
-          if ! vercel whoami 2>&1; then
+          if ! vercel whoami >/dev/null 2>&1; then
             echo "::error::Vercel authentication failed. VERCEL_TOKEN may be expired or invalid."
             echo "::error::See docs/vercel-deploy-runbook.md for instructions to refresh credentials."
             exit 1
@@ -125,7 +125,7 @@ jobs:
       - name: Pull Vercel project settings
         run: |
           npm install -g vercel
-          if ! vercel whoami 2>&1; then
+          if ! vercel whoami >/dev/null 2>&1; then
             echo "::error::Vercel authentication failed. VERCEL_TOKEN may be expired or invalid."
             echo "::error::See docs/vercel-deploy-runbook.md for instructions to refresh credentials."
             exit 1
