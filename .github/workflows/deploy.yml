@@ -80,6 +80,9 @@ jobs:
           # Dummy values so the build does not fail in CI
           DATABASE_URL: "postgresql://dummy:dummy@localhost:5432/dummy"
           NEXT_PUBLIC_SITE_URL: "https://southstarchartersnj.com"
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
 
       - name: Deploy to Vercel (Preview)
         run: vercel deploy --prebuilt
@@ -151,6 +154,9 @@ jobs:
           # Dummy values so the build does not fail in CI
           DATABASE_URL: "postgresql://dummy:dummy@localhost:5432/dummy"
           NEXT_PUBLIC_SITE_URL: "https://southstarchartersnj.com"
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
 
       - name: Deploy to Vercel (Production)
         run: vercel deploy --prebuilt --prod
