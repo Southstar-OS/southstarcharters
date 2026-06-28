@@ -153,22 +153,24 @@ export default function ContactForm() {
       </div>
 
       {/* Status Messages */}
-      {formState.status === "success" && (
-        <div
-          role="status"
-          className="rounded-md bg-green-50 p-4 text-sm text-green-800 ring-1 ring-green-200"
-        >
-          {formState.message}
-        </div>
-      )}
-      {formState.status === "error" && (
-        <div
-          role="alert"
-          className="rounded-md bg-red-50 p-4 text-sm text-red-800 ring-1 ring-red-200"
-        >
-          {formState.message}
-        </div>
-      )}
+      <div aria-live="polite" aria-atomic="true">
+        {formState.status === "success" && (
+          <div
+            role="status"
+            className="rounded-md bg-green-50 p-4 text-sm text-green-800 ring-1 ring-green-200"
+          >
+            {formState.message}
+          </div>
+        )}
+        {formState.status === "error" && (
+          <div
+            role="alert"
+            className="rounded-md bg-red-50 p-4 text-sm text-red-800 ring-1 ring-red-200"
+          >
+            {formState.message}
+          </div>
+        )}
+      </div>
 
       {/* Submit */}
       <button
