@@ -13,6 +13,8 @@ concurrency:
   group: deploy-${{ github.ref }}
   cancel-in-progress: true
 
+permissions:
+  contents: read
 env:
   NODE_VERSION: "22"
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
@@ -25,6 +27,22 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v7
+
+      - name: Verify Vercel secrets are configured
+        run: |
+          missing=()
+          [ -z "$VERCEL_TOKEN" ]      && missing+=(VERCEL_TOKEN)
+          [ -z "$VERCEL_ORG_ID" ]     && missing+=(VERCEL_ORG_ID)
+          [ -z "$VERCEL_PROJECT_ID" ] && missing+=(VERCEL_PROJECT_ID)
+          if [ ${#missing[@]} -gt 0 ]; then
+            echo "::error::Missing required secrets: ${missing[*]}"
+            echo "::error::See docs/vercel-deploy-runbook.md for setup instructions."
+            exit 1
+          fi
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
       - name: Install pnpm
         uses: pnpm/action-setup@v6
@@ -41,6 +59,14 @@ jobs:
       - name: Pull Vercel project settings
         run: |
           npm install -g vercel
+          # Check token identity only — unset VERCEL_ORG_ID so whoami does not
+          # attempt a team-scope lookup (Vercel CLI ≥54 scopes whoami to the org
+          # when VERCEL_ORG_ID is set, which fails if the token lacks team access).
+          if ! ( unset VERCEL_ORG_ID; vercel whoami >/dev/null 2>&1 ); then
+            echo "::error::Vercel authentication failed. VERCEL_TOKEN may be expired or invalid."
+            echo "::error::See docs/vercel-deploy-runbook.md for instructions to refresh credentials."
+            exit 1
+          fi
           vercel pull --yes --environment=preview
         env:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
@@ -56,6 +82,10 @@ jobs:
           # Dummy values so the build does not fail in CI
           DATABASE_URL: "postgresql://dummy:dummy@localhost:5432/dummy"
           NEXT_PUBLIC_SITE_URL: "https://southstarchartersnj.com"
+
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
 
       - name: Deploy to Vercel (Preview)
         run: vercel deploy --prebuilt
@@ -73,6 +103,22 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v7
 
+      - name: Verify Vercel secrets are configured
+        run: |
+          missing=()
+          [ -z "$VERCEL_TOKEN" ]      && missing+=(VERCEL_TOKEN)
+          [ -z "$VERCEL_ORG_ID" ]     && missing+=(VERCEL_ORG_ID)
+          [ -z "$VERCEL_PROJECT_ID" ] && missing+=(VERCEL_PROJECT_ID)
+          if [ ${#missing[@]} -gt 0 ]; then
+            echo "::error::Missing required secrets: ${missing[*]}"
+            echo "::error::See docs/vercel-deploy-runbook.md for setup instructions."
+            exit 1
+          fi
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
       - name: Install pnpm
         uses: pnpm/action-setup@v6
 
@@ -88,6 +134,14 @@ jobs:
       - name: Pull Vercel project settings
         run: |
           npm install -g vercel
+          # Check token identity only — unset VERCEL_ORG_ID so whoami does not
+          # attempt a team-scope lookup (Vercel CLI ≥54 scopes whoami to the org
+          # when VERCEL_ORG_ID is set, which fails if the token lacks team access).
+          if ! ( unset VERCEL_ORG_ID; vercel whoami >/dev/null 2>&1 ); then
+            echo "::error::Vercel authentication failed. VERCEL_TOKEN may be expired or invalid."
+            echo "::error::See docs/vercel-deploy-runbook.md for instructions to refresh credentials."
+            exit 1
+          fi
           vercel pull --yes --environment=production
         env:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
@@ -98,11 +152,15 @@ jobs:
         run: npx prisma generate
 
       - name: Build project
-        run: vercel build --prod
+        run: vercel build
         env:
           # Dummy values so the build does not fail in CI
           DATABASE_URL: "postgresql://dummy:dummy@localhost:5432/dummy"
           NEXT_PUBLIC_SITE_URL: "https://southstarchartersnj.com"
+
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
 
       - name: Deploy to Vercel (Production)
         run: vercel deploy --prebuilt --prod

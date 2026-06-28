@@ -107,7 +107,7 @@ export default function Footer() {
         </div>
 
         {/* Bottom Bar */}
-        <div className="mt-10 border-t border-slate-700 pt-6 text-center text-xs text-slate-400">
+        <div className="mt-10 border-t border-slate-700 pt-6 text-center text-xs text-slate-300">
           <p>
             &copy; {new Date().getFullYear()} {siteConfig.name}. All rights
             reserved.
