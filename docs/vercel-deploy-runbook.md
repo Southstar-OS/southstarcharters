@@ -75,7 +75,18 @@ workflow** (workflow_dispatch), or **Re-run failed jobs** on the latest run.
 
 ## What the workflow does to surface this faster
 
-The workflow (`deploy.yml`) includes a **"Verify Vercel secrets are configured"**
-preflight step in both jobs. If any of the three secrets are empty, the job fails
-immediately with a clear error message pointing to this runbook, before spending
-time installing dependencies or the Vercel CLI.
+The workflow (`deploy.yml`) includes two preflight checks in both jobs:
+
+1. **"Verify Vercel secrets are configured"** — fails immediately with a clear error if
+   any of the three secrets (`VERCEL_TOKEN`, `VERCEL_ORG_ID`, `VERCEL_PROJECT_ID`) are
+   empty, before spending time installing dependencies or the Vercel CLI.
+
+2. **`vercel whoami` authentication probe** — runs inside the "Pull Vercel project
+   settings" step, immediately after installing the Vercel CLI. If the token is expired
+   or invalid, the step fails with:
+   ```
+   ::error::Vercel authentication failed. VERCEL_TOKEN may be expired or invalid.
+   ::error::See docs/vercel-deploy-runbook.md for instructions to refresh credentials.
+   ```
+   This replaces the misleading `"Could not retrieve Project Settings"` error that
+   previously appeared from `vercel pull` when the token was stale.
