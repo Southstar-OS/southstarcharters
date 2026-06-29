@@ -42,8 +42,17 @@ unused and can be deleted.
 - Framework: **Next.js** (auto-detected by Vercel).
 - Package manager: **pnpm** (pinned via `packageManager` in `package.json`).
 - Required environment variables (set in Vercel → Settings → Environment Variables):
-  - `DATABASE_URL` — Neon Postgres connection string.
   - `NEXT_PUBLIC_SITE_URL` — `https://southstarchartersnj.com`.
+- Optional environment variables:
+  - `WEB3FORMS_ACCESS_KEY` — [Web3Forms](https://web3forms.com) access key the contact
+    form uses to email submissions. A working key is committed as the default in
+    `app/api/contact/route.ts` (Web3Forms keys are designed to be public), so the form
+    works with **no configuration**. Only set this env var to **rotate** the key —
+    generate a new one in the Web3Forms dashboard and the env var overrides the default
+    with no code change.
+  - `DATABASE_URL` — **no longer required.** The contact form no longer uses a database;
+    submissions are delivered by email via Web3Forms. The Prisma client is still generated
+    at build time, so a dummy value is harmless, but no real database is needed.
 
 ## Before production launch — SSL check
 
@@ -69,7 +78,8 @@ invalid or expired.
 ## Production launch checklist
 
 - [ ] Vercel **Production Branch = `main`**, auto-deploy on, domain assigned to Production.
-- [ ] `DATABASE_URL` and `NEXT_PUBLIC_SITE_URL` set in Vercel env vars.
+- [ ] `NEXT_PUBLIC_SITE_URL` set in Vercel env vars.
+- [ ] Submit the live contact form once and confirm the email arrives (Web3Forms).
 - [ ] `https://southstarchartersnj.com` has a valid SSL/TLS certificate.
 - [ ] Remove the `-k` flag from `curl` in `.github/workflows/security-headers.yml`.
 - [ ] Confirm all security headers pass in the "Verify Security Headers" workflow.

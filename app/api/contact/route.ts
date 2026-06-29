@@ -1,29 +1,25 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
-import { Resend } from "resend";
 import { z } from "zod";
 
-// Lazily initialize Resend so the build does not fail when the
-// RESEND_API_KEY env var is not yet set.
-function getResend() {
-  const key = process.env.RESEND_API_KEY;
-  if (!key) return null;
-  return new Resend(key);
-}
-
-/** Escape user input before embedding it in the notification email HTML. */
-function escapeHtml(value: unknown): string {
-  return String(value ?? "")
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#39;");
-}
+// Contact submissions are delivered by email via Web3Forms (https://web3forms.com).
+// There is no database: the API route validates and rate-limits the request, then
+// forwards it to Web3Forms, which emails the submission to the address tied to the
+// access key.
+//
+// Web3Forms access keys are designed to be public — their own recommended
+// integration embeds the key in the client-side bundle — so the default below is
+// safe to commit and lets the form work with no extra configuration. To rotate
+// the key (e.g. if it gets abused), generate a new one in the Web3Forms dashboard
+// and set WEB3FORMS_ACCESS_KEY in Vercel → Settings → Environment Variables; the
+// env var overrides the default with no code change.
+const WEB3FORMS_ENDPOINT = "https://api.web3forms.com/submit";
+const DEFAULT_WEB3FORMS_ACCESS_KEY = "96d7226e-42ac-4afb-80c3-a51bd290a3aa";
 
 /** Collapse newlines so user input can't inject headers into the email subject. */
 function singleLine(value: unknown): string {
-  return String(value ?? "").replace(/[\r\n]+/g, " ").slice(0, 200);
+  return String(value ?? "")
+    .replace(/[\r\n]+/g, " ")
+    .slice(0, 200);
 }
 
 /** Validated, length-capped shape of a contact submission. */
@@ -64,7 +60,7 @@ export async function POST(request: Request) {
     if (isRateLimited(ip)) {
       return NextResponse.json(
         { error: "Too many requests. Please try again in a little while." },
-        { status: 429 }
+        { status: 429 },
       );
     }
 
@@ -73,56 +69,57 @@ export async function POST(request: Request) {
     if (!parsed.success) {
       return NextResponse.json(
         { error: "Please check your entries and try again." },
-        { status: 400 }
+        { status: 400 },
       );
     }
     const { name, email, phone, inquiryType, message } = parsed.data;
 
-    // ── Save lead to Neon Postgres ────────────────────────────────────
-    const lead = await prisma.lead.create({
-      data: {
+    const accessKey =
+      process.env.WEB3FORMS_ACCESS_KEY || DEFAULT_WEB3FORMS_ACCESS_KEY;
+
+    // ── Forward to Web3Forms, which emails the submission ─────────────
+    const response = await fetch(WEB3FORMS_ENDPOINT, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify({
+        access_key: accessKey,
+        subject: `New Inquiry: ${singleLine(inquiryType ?? "General")} from ${singleLine(name)}`,
+        from_name: "SouthStar Charters Website",
+        // Lets you hit "Reply" in your inbox to answer the customer directly.
+        replyto: email,
         name,
         email,
-        phone: phone ?? null,
-        inquiryType: inquiryType ?? null,
+        phone: phone ?? "Not provided",
+        inquiry_type: inquiryType ?? "Not specified",
         message,
-        source: "Contact Form",
-      },
+      }),
     });
 
-    // ── Send email notification via Resend ────────────────────────────
-    const resend = getResend();
-    const notificationEmail = process.env.CONTACT_NOTIFICATION_EMAIL;
-    const fromEmail = process.env.CONTACT_FROM_EMAIL ?? "onboarding@resend.dev";
+    const result = (await response.json().catch(() => null)) as
+      | { success?: boolean; message?: string }
+      | null;
 
-    if (resend && notificationEmail) {
-      await resend.emails.send({
-        from: `SouthStar Charters <${fromEmail}>`,
-        to: [notificationEmail],
-        subject: `New Inquiry: ${singleLine(inquiryType ?? "General")} from ${singleLine(name)}`,
-        html: `
-          <h2>New Contact Form Submission</h2>
-          <table style="border-collapse:collapse;width:100%;max-width:600px;">
-            <tr><td style="padding:8px;font-weight:bold;">Name</td><td style="padding:8px;">${escapeHtml(name)}</td></tr>
-            <tr><td style="padding:8px;font-weight:bold;">Email</td><td style="padding:8px;"><a href="mailto:${escapeHtml(email)}">${escapeHtml(email)}</a></td></tr>
-            <tr><td style="padding:8px;font-weight:bold;">Phone</td><td style="padding:8px;">${escapeHtml(phone ?? "Not provided")}</td></tr>
-            <tr><td style="padding:8px;font-weight:bold;">Inquiry Type</td><td style="padding:8px;">${escapeHtml(inquiryType ?? "Not specified")}</td></tr>
-            <tr><td style="padding:8px;font-weight:bold;">Message</td><td style="padding:8px;white-space:pre-wrap;">${escapeHtml(message)}</td></tr>
-          </table>
-          <p style="margin-top:16px;font-size:12px;color:#666;">Lead ID: ${escapeHtml(lead.id)}</p>
-        `,
-      });
+    if (!response.ok || !result?.success) {
+      console.error(
+        "Web3Forms submission failed:",
+        response.status,
+        result?.message ?? "no response body",
+      );
+      return NextResponse.json(
+        { error: "An unexpected error occurred. Please try again later." },
+        { status: 502 },
+      );
     }
 
-    return NextResponse.json(
-      { success: true, id: lead.id },
-      { status: 201 }
-    );
+    return NextResponse.json({ success: true }, { status: 200 });
   } catch (error) {
     console.error("Contact form error:", error);
     return NextResponse.json(
       { error: "An unexpected error occurred. Please try again later." },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
