@@ -1,5 +1,5 @@
 # SOUTHSTAR CHARTERS — AGENT OPERATING CONTRACT
-Repo: Southstar-OS/southstarcharters | Stack: Next.js 16 + Prisma + pnpm
+Repo: Southstar-OS/southstarcharters | Stack: Next.js 16 + pnpm
 Scope: This contract governs ALL agent-team work in this repo. Read first, every run.
 
 ## 0. ENTITY BOUNDARY
