@@ -10,6 +10,17 @@ const INQUIRY_OPTIONS = [
   "General Question",
 ] as const;
 
+// Submissions are emailed via Web3Forms (https://web3forms.com). The free plan
+// only accepts submissions from the browser (server-side POSTs are rejected), so
+// the form posts directly to Web3Forms from the client. Web3Forms access keys are
+// designed to be public, so committing the default below is safe and lets the form
+// work with no configuration. To rotate the key, set
+// NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY in Vercel (it's inlined at build time).
+const WEB3FORMS_ENDPOINT = "https://api.web3forms.com/submit";
+const WEB3FORMS_ACCESS_KEY =
+  process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY ||
+  "96d7226e-42ac-4afb-80c3-a51bd290a3aa";
+
 interface FormState {
   status: "idle" | "submitting" | "success" | "error";
   message: string;
@@ -25,25 +36,51 @@ export default function ContactForm() {
     e.preventDefault();
     setFormState({ status: "submitting", message: "" });
 
-    const formData = new FormData(e.currentTarget);
-    const body = {
-      name: formData.get("name") as string,
-      email: formData.get("email") as string,
-      phone: (formData.get("phone") as string) || undefined,
-      inquiryType: (formData.get("inquiryType") as string) || undefined,
-      message: formData.get("message") as string,
+    const form = e.currentTarget;
+    const formData = new FormData(form);
+    const name = (formData.get("name") as string) || "";
+    const email = (formData.get("email") as string) || "";
+    const phone = (formData.get("phone") as string) || "Not provided";
+    const inquiryType =
+      (formData.get("inquiryType") as string) || "Not specified";
+    const message = (formData.get("message") as string) || "";
+
+    const payload = {
+      access_key: WEB3FORMS_ACCESS_KEY,
+      subject: `New Inquiry: ${inquiryType} from ${name}`,
+      from_name: "SouthStar Charters Website",
+      // Lets you hit "Reply" in your inbox to answer the customer directly.
+      replyto: email,
+      // Honeypot: a real user never fills this hidden field; bots that do are
+      // rejected by Web3Forms.
+      botcheck: Boolean(formData.get("botcheck")),
+      name,
+      email,
+      phone,
+      "Inquiry Type": inquiryType,
+      message,
     };
 
     try {
-      const res = await fetch("/api/contact", {
+      const res = await fetch(WEB3FORMS_ENDPOINT, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify(payload),
       });
+      const data = (await res.json().catch(() => null)) as
+        | { success?: boolean; message?: string }
+        | null;
 
-      if (!res.ok) {
-        const data = await res.json().catch(() => ({}));
-        throw new Error(data.error ?? "Something went wrong. Please try again.");
+      if (!res.ok || !data?.success) {
+        console.error(
+          "Web3Forms submission failed:",
+          res.status,
+          data?.message ?? "no response body",
+        );
+        throw new Error("Something went wrong. Please try again.");
       }
 
       setFormState({
@@ -51,7 +88,7 @@ export default function ContactForm() {
         message:
           "Thank you! Your message has been sent. We will get back to you shortly.",
       });
-      (e.target as HTMLFormElement).reset();
+      form.reset();
     } catch (err) {
       setFormState({
         status: "error",
@@ -65,6 +102,17 @@ export default function ContactForm() {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
+      {/* Honeypot anti-spam field — hidden from real users */}
+      <input
+        type="checkbox"
+        name="botcheck"
+        className="hidden"
+        style={{ display: "none" }}
+        tabIndex={-1}
+        autoComplete="off"
+        aria-hidden="true"
+      />
+
       {/* Name */}
       <div>
         <label htmlFor="name" className="block text-sm font-medium text-slate-700">

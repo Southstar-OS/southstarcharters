@@ -44,12 +44,13 @@ unused and can be deleted.
 - Required environment variables (set in Vercel → Settings → Environment Variables):
   - `NEXT_PUBLIC_SITE_URL` — `https://southstarchartersnj.com`.
 - Optional environment variables:
-  - `WEB3FORMS_ACCESS_KEY` — [Web3Forms](https://web3forms.com) access key the contact
-    form uses to email submissions. A working key is committed as the default in
-    `app/api/contact/route.ts` (Web3Forms keys are designed to be public), so the form
-    works with **no configuration**. Only set this env var to **rotate** the key —
-    generate a new one in the Web3Forms dashboard and the env var overrides the default
-    with no code change.
+  - `NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY` — [Web3Forms](https://web3forms.com) access key the
+    contact form uses to email submissions. The form posts **directly from the browser**
+    (Web3Forms' free plan rejects server-side submissions), so a working key is committed
+    as the default in `components/ContactForm.tsx` — Web3Forms keys are designed to be
+    public, so the form works with **no configuration**. Only set this env var to
+    **rotate** the key: generate a new one in the Web3Forms dashboard and set it here (it's
+    inlined into the client bundle at build time), then redeploy.
   - `DATABASE_URL` — **not used.** This site has no database; the contact form delivers
     submissions by email via Web3Forms. If a leftover `DATABASE_URL` is set in Vercel, it
     can be deleted.
