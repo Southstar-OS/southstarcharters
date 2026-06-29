@@ -28,6 +28,19 @@ jobs:
             echo "::error::package-lock.json is committed; this repo uses pnpm only."; exit 1
           fi
 
+      - name: Reject token-based Vercel deploy
+        run: |
+          # Deploys go through Vercel's Git integration — no GitHub Actions deploy,
+          # no Vercel auth token. A token-based deploy workflow was added/removed
+          # repeatedly and always broke when the token expired; block it for good.
+          # Patterns match the actual secret reference and vercel CLI commands (and
+          # use bracket tricks so this guard never matches its own source line).
+          if grep -rEl 'secrets\.VERCEL_[T]OKEN|vercel[[:space:]]+(deploy|pull|build)' .github/workflows/; then
+            echo "::error::Token-based Vercel deploy detected in a workflow."
+            echo "::error::This repo deploys via Vercel's Git integration only. Remove the deploy workflow; see DEPLOYMENT.md."
+            exit 1
+          fi
+
       - name: Install pnpm
         uses: pnpm/action-setup@v6
 

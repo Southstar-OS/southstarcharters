@@ -1,32 +1,76 @@
 # Deployment Guide
 
-## Preview / Development
+## How this site deploys
 
-The site is currently in **preview** mode. The security headers workflow uses an insecure SSL flag (`-k`) in the `curl` command to allow the CI check to pass while the SSL/TLS certificate is not yet fully configured.
+**Deployment is handled entirely by Vercel's Git integration.** There is **no**
+GitHub Actions deploy workflow and **no `VERCEL_TOKEN`**.
 
-## Before Production Launch!
+- **Push to `main` → production** deploy (`https://southstarchartersnj.com`).
+- **Open a PR → preview** deploy, with the preview URL posted on the PR.
 
-> **Important:** Remove the `-k` flag from the `curl` command in `.github/workflows/security-headers.yml` before going live to enforce secure SSL validation.
+Vercel builds and deploys on its own infrastructure. Nothing in this repo runs
+`vercel pull` / `vercel build` / `vercel deploy`, and no Vercel credentials are
+stored as GitHub Actions secrets.
 
-In `.github/workflows/security-headers.yml`, restore the curl command to:
+### ⛔ Do NOT add a GitHub Actions deploy workflow
 
-```sh
-# Production-safe version (no -k flag):
-RESPONSE=$(curl -sI https://southstarchartersnj.com)
-```
+A token-based `deploy.yml` (using `VERCEL_TOKEN` / `VERCEL_ORG_ID` /
+`VERCEL_PROJECT_ID`) was added and removed repeatedly in this repo's history. It
+**always breaks** because Vercel tokens expire, and every re-add reintroduced the
+same chronic failure. Don't bring it back.
 
-The current preview version uses:
+A CI guard (`Reject token-based Vercel deploy` in `.github/workflows/ci.yml`)
+**fails the build** if any workflow reintroduces `VERCEL_TOKEN` or a `vercel`
+deploy command. If you hit that error, the fix is to remove the deploy workflow —
+not to refresh a token.
+
+### If deploys aren't happening
+
+The fix is in the **Vercel dashboard**, not in this repo:
+
+1. Project → **Settings → Git** → confirm the repo is connected and
+   **Production Branch = `main`**, with automatic deployments enabled.
+2. Confirm the `southstarchartersnj.com` domain is assigned to this project's
+   **Production** environment.
+3. To force a deploy of the latest commit: **Deployments → ⋯ → Redeploy**.
+
+The `VERCEL_TOKEN` / `VERCEL_ORG_ID` / `VERCEL_PROJECT_ID` GitHub secrets are
+unused and can be deleted.
+
+## Build configuration
+
+- Framework: **Next.js** (auto-detected by Vercel).
+- Package manager: **pnpm** (pinned via `packageManager` in `package.json`).
+- Required environment variables (set in Vercel → Settings → Environment Variables):
+  - `DATABASE_URL` — Neon Postgres connection string.
+  - `NEXT_PUBLIC_SITE_URL` — `https://southstarchartersnj.com`.
+
+## Before production launch — SSL check
+
+The `security-headers` workflow currently uses an insecure SSL flag (`-k`) in its
+`curl` command so the CI check passes before the SSL/TLS certificate is fully
+configured.
+
+> **Important:** remove the `-k` flag from the `curl` command in
+> `.github/workflows/security-headers.yml` before going live, to enforce secure
+> SSL validation.
 
 ```sh
 # Preview only — bypasses SSL verification. DO NOT use in production:
 RESPONSE=$(curl -ksI https://southstarchartersnj.com)
+
+# Production-safe version (no -k flag):
+RESPONSE=$(curl -sI https://southstarchartersnj.com)
 ```
 
-Leaving the `-k` flag in production would allow the CI check to pass even if the SSL certificate is invalid or expired, which is a security risk.
+Leaving `-k` in production would let the CI check pass even if the certificate is
+invalid or expired.
 
-## Production Launch Checklist
+## Production launch checklist
 
-- [ ] Ensure `https://southstarchartersnj.com` has a valid SSL/TLS certificate
-- [ ] Remove the `-k` flag from `curl` in `.github/workflows/security-headers.yml`
-- [ ] Verify all security headers are present and passing in the "Verify Security Headers" workflow
-- [ ] Run a full deployment and confirm the site is accessible over HTTPS without certificate errors
+- [ ] Vercel **Production Branch = `main`**, auto-deploy on, domain assigned to Production.
+- [ ] `DATABASE_URL` and `NEXT_PUBLIC_SITE_URL` set in Vercel env vars.
+- [ ] `https://southstarchartersnj.com` has a valid SSL/TLS certificate.
+- [ ] Remove the `-k` flag from `curl` in `.github/workflows/security-headers.yml`.
+- [ ] Confirm all security headers pass in the "Verify Security Headers" workflow.
+- [ ] Confirm the site is accessible over HTTPS without certificate errors.
