@@ -50,9 +50,9 @@ unused and can be deleted.
     works with **no configuration**. Only set this env var to **rotate** the key —
     generate a new one in the Web3Forms dashboard and the env var overrides the default
     with no code change.
-  - `DATABASE_URL` — **no longer required.** The contact form no longer uses a database;
-    submissions are delivered by email via Web3Forms. The Prisma client is still generated
-    at build time, so a dummy value is harmless, but no real database is needed.
+  - `DATABASE_URL` — **not used.** This site has no database; the contact form delivers
+    submissions by email via Web3Forms. If a leftover `DATABASE_URL` is set in Vercel, it
+    can be deleted.
 
 ## Before production launch — SSL check
 
